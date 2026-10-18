@@ -38,6 +38,48 @@ public interface JWKSKeysItem {
             }
             try {
                 JWKSEd25519PublicKey branch = mapper.convertValue(node, JWKSEd25519PublicKey.class);
+                if (keepsEveryKey(mapper, node, branch)) return branch;
+            } catch (IllegalArgumentException | SdkValidationError ignored) {
+                // Not this branch.
+            }
+            try {
+                JWKSEcdsaPublicKey branch = mapper.convertValue(node, JWKSEcdsaPublicKey.class);
+                if (keepsEveryKey(mapper, node, branch)) return branch;
+            } catch (IllegalArgumentException | SdkValidationError ignored) {
+                // Not this branch.
+            }
+            try {
+                JWKSRsaPublicKey branch = mapper.convertValue(node, JWKSRsaPublicKey.class);
+                if (keepsEveryKey(mapper, node, branch)) return branch;
+            } catch (IllegalArgumentException | SdkValidationError ignored) {
+                // Not this branch.
+            }
+            try {
+                JWKSEd25519PrivateKey branch = mapper.convertValue(node, JWKSEd25519PrivateKey.class);
+                if (keepsEveryKey(mapper, node, branch)) return branch;
+            } catch (IllegalArgumentException | SdkValidationError ignored) {
+                // Not this branch.
+            }
+            try {
+                JWKSEcdsaPrivateKey branch = mapper.convertValue(node, JWKSEcdsaPrivateKey.class);
+                if (keepsEveryKey(mapper, node, branch)) return branch;
+            } catch (IllegalArgumentException | SdkValidationError ignored) {
+                // Not this branch.
+            }
+            try {
+                JWKSRsaPrivateKey branch = mapper.convertValue(node, JWKSRsaPrivateKey.class);
+                if (keepsEveryKey(mapper, node, branch)) return branch;
+            } catch (IllegalArgumentException | SdkValidationError ignored) {
+                // Not this branch.
+            }
+            try {
+                JWKSSymmetricKey branch = mapper.convertValue(node, JWKSSymmetricKey.class);
+                if (keepsEveryKey(mapper, node, branch)) return branch;
+            } catch (IllegalArgumentException | SdkValidationError ignored) {
+                // Not this branch.
+            }
+            try {
+                JWKSEd25519PublicKey branch = mapper.convertValue(node, JWKSEd25519PublicKey.class);
                 return branch;
             } catch (IllegalArgumentException | SdkValidationError ignored) {
                 // Not this branch.
@@ -80,6 +122,17 @@ public interface JWKSKeysItem {
             }
             throw com.fasterxml.jackson.databind.exc.MismatchedInputException.from(
                 parser, JWKSKeysItem.class, "no JWKSKeysItem branch accepts this payload");
+        }
+
+        private static boolean keepsEveryKey(
+            com.fasterxml.jackson.databind.ObjectMapper mapper,
+            com.fasterxml.jackson.databind.JsonNode node,
+            Object branch) {
+            com.fasterxml.jackson.databind.JsonNode kept = mapper.valueToTree(branch);
+            for (java.util.Iterator<String> names = node.fieldNames(); names.hasNext(); ) {
+                if (!kept.has(names.next())) return false;
+            }
+            return true;
         }
     }
 }

@@ -3,10 +3,10 @@
 
 package dev.octri.showcase.clerk.methods;
 
+import dev.octri.showcase.clerk.models.oauth_access_tokens.VerifyOAuthAccessTokenResponse;
 import dev.octri.showcase.clerk.SdkConfig;
 import dev.octri.showcase.clerk.SdkClient;
 import com.fasterxml.jackson.core.type.TypeReference;
-import java.util.Map;
 
 public class OAuthAccessTokens {
 
@@ -32,18 +32,18 @@ public class OAuthAccessTokens {
     /**
      * Verifies an OAuth access token and returns its token details or active status. Supply the token in `access_token`; the legacy `secret` field is deprecated. Use this endpoint to check whether an access token is active and retrieve its associated client, subject, and scopes when available.
      */
-    public static Map<String, Object> verifyOAuthAccessToken(SdkConfig.ClientConfig clientConfig, VerifyOAuthAccessTokenRequest request) {
+    public static VerifyOAuthAccessTokenResponse verifyOAuthAccessToken(SdkConfig.ClientConfig clientConfig, VerifyOAuthAccessTokenRequest request) {
         return verifyOAuthAccessToken(clientConfig, request, null);
     }
 
     /**
      * Verifies an OAuth access token and returns its token details or active status. Supply the token in `access_token`; the legacy `secret` field is deprecated. Use this endpoint to check whether an access token is active and retrieve its associated client, subject, and scopes when available.
      */
-    public static Map<String, Object> verifyOAuthAccessToken(SdkConfig.ClientConfig clientConfig, VerifyOAuthAccessTokenRequest request, SdkConfig.RequestOptions options) {
+    public static VerifyOAuthAccessTokenResponse verifyOAuthAccessToken(SdkConfig.ClientConfig clientConfig, VerifyOAuthAccessTokenRequest request, SdkConfig.RequestOptions options) {
         String accessToken = request.getAccessToken();
         String secret = request.getSecret();
 
-        return SdkClient.request(clientConfig, "POST", "/oauth_applications/access_tokens/verify", null, SdkClient.q("access_token", SdkClient.omitIfNull(accessToken), "secret", SdkClient.omitIfNull(secret)), null, new TypeReference<Map<String, Object>>(){}, "verifyOAuthAccessToken", null, SdkClient.ResponseDecoder.JSON, options).data;
+        return SdkClient.request(clientConfig, "POST", "/oauth_applications/access_tokens/verify", null, SdkClient.q("access_token", SdkClient.omitIfNull(accessToken), "secret", SdkClient.omitIfNull(secret)), null, new TypeReference<VerifyOAuthAccessTokenResponse>(){}, "verifyOAuthAccessToken", null, SdkClient.ResponseDecoder.JSON, options).data;
     }
 
 

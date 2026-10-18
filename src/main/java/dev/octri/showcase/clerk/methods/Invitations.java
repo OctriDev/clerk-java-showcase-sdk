@@ -3,6 +3,7 @@
 
 package dev.octri.showcase.clerk.methods;
 
+import dev.octri.showcase.clerk.models.invitations.InvitationRevoked;
 import dev.octri.showcase.clerk.models.shared.DeletedObject;
 import dev.octri.showcase.clerk.models.shared.Invitation;
 import dev.octri.showcase.clerk.models.shared.InvitationStatusEnum;
@@ -80,96 +81,6 @@ public class Invitations {
                 + ", ignoreExisting=" + ignoreExisting
                 + ", expiresInDays=" + expiresInDays
                 + ", templateSlug=" + templateSlug
-                + "}";
-        }
-    }
-
-    /**
-     * Required enumerated value serialized in the `object` wire field.
-     */
-    public static final class RevokeInvitationResponseObjectEnum {
-        public static final RevokeInvitationResponseObjectEnum INVITATION = new RevokeInvitationResponseObjectEnum("invitation");
-        private final String value;
-        private RevokeInvitationResponseObjectEnum(String value) { this.value = java.util.Objects.requireNonNull(value, "value"); }
-        @com.fasterxml.jackson.annotation.JsonCreator(mode = com.fasterxml.jackson.annotation.JsonCreator.Mode.DELEGATING)
-        public static RevokeInvitationResponseObjectEnum fromValue(String value) {
-            if ("invitation".equals(value)) return INVITATION;
-            return new RevokeInvitationResponseObjectEnum(value);
-        }
-        @com.fasterxml.jackson.annotation.JsonValue public String getValue() { return value; }
-        @java.lang.Override public String toString() { return value; }
-        @java.lang.Override public boolean equals(Object other) {
-            return this == other || (other instanceof RevokeInvitationResponseObjectEnum o && value.equals(o.value));
-        }
-        @java.lang.Override public int hashCode() { return value.hashCode(); }
-    }
-
-    public static final class RevokeInvitationResponseStatusEnum {
-        public static final RevokeInvitationResponseStatusEnum REVOKED = new RevokeInvitationResponseStatusEnum("revoked");
-        private final String value;
-        private RevokeInvitationResponseStatusEnum(String value) { this.value = java.util.Objects.requireNonNull(value, "value"); }
-        @com.fasterxml.jackson.annotation.JsonCreator(mode = com.fasterxml.jackson.annotation.JsonCreator.Mode.DELEGATING)
-        public static RevokeInvitationResponseStatusEnum fromValue(String value) {
-            if ("revoked".equals(value)) return REVOKED;
-            return new RevokeInvitationResponseStatusEnum(value);
-        }
-        @com.fasterxml.jackson.annotation.JsonValue public String getValue() { return value; }
-        @java.lang.Override public String toString() { return value; }
-        @java.lang.Override public boolean equals(Object other) {
-            return this == other || (other instanceof RevokeInvitationResponseStatusEnum o && value.equals(o.value));
-        }
-        @java.lang.Override public int hashCode() { return value.hashCode(); }
-    }
-
-
-    public static class RevokeInvitationResponse {
-        /**
-         * Required enumerated value serialized in the `object` wire field.
-         */
-        public RevokeInvitationResponseObjectEnum object;
-        /**
-         * Required `string` value serialized in the `id` wire field.
-         */
-        public String id;
-        /**
-         * Required `email`-formatted value serialized in the `email_address` wire field.
-         */
-        @JsonProperty("email_address") public String emailAddress;
-        /**
-         * Required object value serialized in the `public_metadata` wire field.
-         */
-        @JsonProperty("public_metadata") public Map<String, Object> publicMetadata;
-        public RevokeInvitationResponseStatusEnum status;
-        /**
-         * Unix timestamp of creation.
-         */
-        @JsonProperty("created_at") public Long createdAt;
-        /**
-         * Unix timestamp of last update.
-         */
-        @JsonProperty("updated_at") public Long updatedAt;
-        @Nullable public Boolean revoked;
-        /**
-         * Optional `string` value serialized in the `url` wire field.
-         */
-        @Nullable public String url;
-        /**
-         * Unix timestamp of expiration.
-         */
-        @Nullable @JsonProperty("expires_at") public Long expiresAt;
-        @java.lang.Override
-        public String toString() {
-            return "RevokeInvitationResponse{"
-                + "object=" + object
-                + ", id=" + id
-                + ", emailAddress=" + emailAddress
-                + ", publicMetadata=" + publicMetadata
-                + ", status=" + status
-                + ", createdAt=" + createdAt
-                + ", updatedAt=" + updatedAt
-                + ", revoked=" + revoked
-                + ", url=" + url
-                + ", expiresAt=" + expiresAt
                 + "}";
         }
     }
@@ -412,17 +323,17 @@ public class Invitations {
     /**
      * Revokes the given invitation. Revoking an invitation will prevent the user from using the invitation link that was sent to them. However, it doesn't prevent the user from signing up if they follow the sign up flow. Only active (i.e. non-revoked) invitations can be revoked.
      */
-    public static RevokeInvitationResponse revokeInvitation(SdkConfig.ClientConfig clientConfig, RevokeInvitationRequest request) {
+    public static InvitationRevoked revokeInvitation(SdkConfig.ClientConfig clientConfig, RevokeInvitationRequest request) {
         return revokeInvitation(clientConfig, request, null);
     }
 
     /**
      * Revokes the given invitation. Revoking an invitation will prevent the user from using the invitation link that was sent to them. However, it doesn't prevent the user from signing up if they follow the sign up flow. Only active (i.e. non-revoked) invitations can be revoked.
      */
-    public static RevokeInvitationResponse revokeInvitation(SdkConfig.ClientConfig clientConfig, RevokeInvitationRequest request, SdkConfig.RequestOptions options) {
+    public static InvitationRevoked revokeInvitation(SdkConfig.ClientConfig clientConfig, RevokeInvitationRequest request, SdkConfig.RequestOptions options) {
         String invitationId = request.getInvitationId();
 
-        return SdkClient.request(clientConfig, "POST", "/invitations/" + SdkClient.encodePathSegment(invitationId) + "/revoke", null, null, null, new TypeReference<RevokeInvitationResponse>(){}, "revokeInvitation", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "404", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "POST", "/invitations/" + SdkClient.encodePathSegment(invitationId) + "/revoke", null, null, null, new TypeReference<InvitationRevoked>(){}, "revokeInvitation", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "404", ClerkErrors.class)).data;
     }
 
 

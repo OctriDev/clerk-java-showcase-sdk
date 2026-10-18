@@ -3,10 +3,11 @@
 
 package dev.octri.showcase.clerk.methods;
 
-import dev.octri.showcase.clerk.models.directories.Directories;
 import dev.octri.showcase.clerk.models.directories.Directory;
 import dev.octri.showcase.clerk.models.directories.DirectoryGroupRoleMapping;
-import dev.octri.showcase.clerk.models.directories.DirectoryGroupRoleMappings;
+import dev.octri.showcase.clerk.models.directories.DirectoryGroupRoleMappingDeleted;
+import dev.octri.showcase.clerk.models.directories.DirectoryGroupRoleMappingList;
+import dev.octri.showcase.clerk.models.directories.DirectoryList;
 import dev.octri.showcase.clerk.models.shared.DeletedObject;
 import dev.octri.showcase.clerk.models.shared_clerk.ClerkErrors;
 import dev.octri.showcase.clerk.SdkConfig;
@@ -19,22 +20,6 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 public class DirectoriesApi {
-
-
-    public static class ListDirectoriesResponse {
-        public Directories data;
-        /**
-         * Total number of directories.
-         */
-        @JsonProperty("total_count") public Long totalCount;
-        @java.lang.Override
-        public String toString() {
-            return "ListDirectoriesResponse{"
-                + "data=" + data
-                + ", totalCount=" + totalCount
-                + "}";
-        }
-    }
 
 
     public static class CreateDirectoryGroupRoleMappingsItem {
@@ -76,22 +61,6 @@ public class DirectoriesApi {
     }
 
 
-    public static class ListDirectoryGroupRoleMappingsResponse {
-        public DirectoryGroupRoleMappings data;
-        /**
-         * Total number of directory group role mappings in the directory.
-         */
-        @JsonProperty("total_count") public Long totalCount;
-        @java.lang.Override
-        public String toString() {
-            return "ListDirectoryGroupRoleMappingsResponse{"
-                + "data=" + data
-                + ", totalCount=" + totalCount
-                + "}";
-        }
-    }
-
-
     public static class ReplaceDirectoryGroupRoleMappingsMappingsItem {
         /**
          * The ID of the organization role to assign to members of the group.
@@ -111,66 +80,6 @@ public class DirectoriesApi {
                 + "roleId=" + roleId
                 + ", directoryGroupId=" + directoryGroupId
                 + ", scimGroupId=" + scimGroupId
-                + "}";
-        }
-    }
-
-
-    public static class ReplaceDirectoryGroupRoleMappingsResponse {
-        public DirectoryGroupRoleMappings data;
-        /**
-         * Total number of directory group role mappings in the directory.
-         */
-        @JsonProperty("total_count") public Long totalCount;
-        @java.lang.Override
-        public String toString() {
-            return "ReplaceDirectoryGroupRoleMappingsResponse{"
-                + "data=" + data
-                + ", totalCount=" + totalCount
-                + "}";
-        }
-    }
-
-    /**
-     * String representing the object's type.
-     */
-    public static final class DeleteDirectoryGroupRoleMappingResponseObjectEnum {
-        public static final DeleteDirectoryGroupRoleMappingResponseObjectEnum DIRECTORY_GROUP_ROLE_MAPPING = new DeleteDirectoryGroupRoleMappingResponseObjectEnum("directory_group_role_mapping");
-        private final String value;
-        private DeleteDirectoryGroupRoleMappingResponseObjectEnum(String value) { this.value = java.util.Objects.requireNonNull(value, "value"); }
-        @com.fasterxml.jackson.annotation.JsonCreator(mode = com.fasterxml.jackson.annotation.JsonCreator.Mode.DELEGATING)
-        public static DeleteDirectoryGroupRoleMappingResponseObjectEnum fromValue(String value) {
-            if ("directory_group_role_mapping".equals(value)) return DIRECTORY_GROUP_ROLE_MAPPING;
-            return new DeleteDirectoryGroupRoleMappingResponseObjectEnum(value);
-        }
-        @com.fasterxml.jackson.annotation.JsonValue public String getValue() { return value; }
-        @java.lang.Override public String toString() { return value; }
-        @java.lang.Override public boolean equals(Object other) {
-            return this == other || (other instanceof DeleteDirectoryGroupRoleMappingResponseObjectEnum o && value.equals(o.value));
-        }
-        @java.lang.Override public int hashCode() { return value.hashCode(); }
-    }
-
-
-    public static class DeleteDirectoryGroupRoleMappingResponse {
-        /**
-         * String representing the object's type.
-         */
-        public DeleteDirectoryGroupRoleMappingResponseObjectEnum object;
-        /**
-         * The ID of the deleted directory group role mapping.
-         */
-        public String id;
-        /**
-         * Whether the directory group role mapping was successfully deleted.
-         */
-        public Boolean deleted;
-        @java.lang.Override
-        public String toString() {
-            return "DeleteDirectoryGroupRoleMappingResponse{"
-                + "object=" + object
-                + ", id=" + id
-                + ", deleted=" + deleted
                 + "}";
         }
     }
@@ -197,14 +106,14 @@ public class DirectoriesApi {
     /**
      * Returns a list of all directories for the instance.
      */
-    public static ListDirectoriesResponse listDirectories(SdkConfig.ClientConfig clientConfig, ListDirectoriesRequest request) {
+    public static DirectoryList listDirectories(SdkConfig.ClientConfig clientConfig, ListDirectoriesRequest request) {
         return listDirectories(clientConfig, request, null);
     }
 
     /**
      * Returns a list of all directories for the instance.
      */
-    public static ListDirectoriesResponse listDirectories(SdkConfig.ClientConfig clientConfig, ListDirectoriesRequest request, SdkConfig.RequestOptions options) {
+    public static DirectoryList listDirectories(SdkConfig.ClientConfig clientConfig, ListDirectoriesRequest request, SdkConfig.RequestOptions options) {
         Long limit = request.getLimit();
         Long offset = request.getOffset();
 
@@ -216,7 +125,7 @@ public class DirectoriesApi {
             { Validation.RangeOpts __r = new Validation.RangeOpts(); __r.min = 0d; Validation.validateRange("offset", offset, __r); }
         }
 
-        return SdkClient.request(clientConfig, "GET", "/directories", SdkClient.q("limit", SdkClient.queryValue(limit, "form", true), "offset", SdkClient.queryValue(offset, "form", true)), null, null, new TypeReference<ListDirectoriesResponse>(){}, "listDirectories", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("401", ClerkErrors.class, "403", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "GET", "/directories", SdkClient.q("limit", SdkClient.queryValue(limit, "form", true), "offset", SdkClient.queryValue(offset, "form", true)), null, null, new TypeReference<DirectoryList>(){}, "listDirectories", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("401", ClerkErrors.class, "403", ClerkErrors.class)).data;
     }
 
 
@@ -454,17 +363,17 @@ public class DirectoriesApi {
     /**
      * Returns the list of directory group to organization role mappings for a directory, ordered by precedence.
      */
-    public static ListDirectoryGroupRoleMappingsResponse listDirectoryGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ListDirectoryGroupRoleMappingsRequest request) {
+    public static DirectoryGroupRoleMappingList listDirectoryGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ListDirectoryGroupRoleMappingsRequest request) {
         return listDirectoryGroupRoleMappings(clientConfig, request, null);
     }
 
     /**
      * Returns the list of directory group to organization role mappings for a directory, ordered by precedence.
      */
-    public static ListDirectoryGroupRoleMappingsResponse listDirectoryGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ListDirectoryGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
+    public static DirectoryGroupRoleMappingList listDirectoryGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ListDirectoryGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
         String directoryId = request.getDirectoryId();
 
-        return SdkClient.request(clientConfig, "GET", "/directories/" + SdkClient.encodePathSegment(directoryId) + "/group_role_mappings", null, null, null, new TypeReference<ListDirectoryGroupRoleMappingsResponse>(){}, "listDirectoryGroupRoleMappings", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "GET", "/directories/" + SdkClient.encodePathSegment(directoryId) + "/group_role_mappings", null, null, null, new TypeReference<DirectoryGroupRoleMappingList>(){}, "listDirectoryGroupRoleMappings", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class)).data;
     }
 
 
@@ -545,18 +454,18 @@ public class DirectoriesApi {
     /**
      * Replaces the entire set of directory group role mappings for a directory. The position of each item in the `mappings` array determines its precedence (the first item gets precedence 1). Passing an empty array removes all mappings. Mappings can be replaced while group role mapping is disabled on the directory, but they only take effect once it is enabled.
      */
-    public static ReplaceDirectoryGroupRoleMappingsResponse replaceDirectoryGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ReplaceDirectoryGroupRoleMappingsRequest request) {
+    public static DirectoryGroupRoleMappingList replaceDirectoryGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ReplaceDirectoryGroupRoleMappingsRequest request) {
         return replaceDirectoryGroupRoleMappings(clientConfig, request, null);
     }
 
     /**
      * Replaces the entire set of directory group role mappings for a directory. The position of each item in the `mappings` array determines its precedence (the first item gets precedence 1). Passing an empty array removes all mappings. Mappings can be replaced while group role mapping is disabled on the directory, but they only take effect once it is enabled.
      */
-    public static ReplaceDirectoryGroupRoleMappingsResponse replaceDirectoryGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ReplaceDirectoryGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
+    public static DirectoryGroupRoleMappingList replaceDirectoryGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ReplaceDirectoryGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
         String directoryId = request.getDirectoryId();
         List<ReplaceDirectoryGroupRoleMappingsMappingsItem> mappings = request.getMappings();
 
-        return SdkClient.request(clientConfig, "PUT", "/directories/" + SdkClient.encodePathSegment(directoryId) + "/group_role_mappings", null, SdkClient.q("mappings", mappings), null, new TypeReference<ReplaceDirectoryGroupRoleMappingsResponse>(){}, "replaceDirectoryGroupRoleMappings", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "422", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "PUT", "/directories/" + SdkClient.encodePathSegment(directoryId) + "/group_role_mappings", null, SdkClient.q("mappings", mappings), null, new TypeReference<DirectoryGroupRoleMappingList>(){}, "replaceDirectoryGroupRoleMappings", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "422", ClerkErrors.class)).data;
     }
 
 
@@ -583,18 +492,18 @@ public class DirectoriesApi {
     /**
      * Deletes a single directory group role mapping. Mappings can be deleted while group role mapping is disabled on the directory, but the change only takes effect once it is enabled.
      */
-    public static DeleteDirectoryGroupRoleMappingResponse deleteDirectoryGroupRoleMapping(SdkConfig.ClientConfig clientConfig, DeleteDirectoryGroupRoleMappingRequest request) {
+    public static DirectoryGroupRoleMappingDeleted deleteDirectoryGroupRoleMapping(SdkConfig.ClientConfig clientConfig, DeleteDirectoryGroupRoleMappingRequest request) {
         return deleteDirectoryGroupRoleMapping(clientConfig, request, null);
     }
 
     /**
      * Deletes a single directory group role mapping. Mappings can be deleted while group role mapping is disabled on the directory, but the change only takes effect once it is enabled.
      */
-    public static DeleteDirectoryGroupRoleMappingResponse deleteDirectoryGroupRoleMapping(SdkConfig.ClientConfig clientConfig, DeleteDirectoryGroupRoleMappingRequest request, SdkConfig.RequestOptions options) {
+    public static DirectoryGroupRoleMappingDeleted deleteDirectoryGroupRoleMapping(SdkConfig.ClientConfig clientConfig, DeleteDirectoryGroupRoleMappingRequest request, SdkConfig.RequestOptions options) {
         String directoryId = request.getDirectoryId();
         String mappingId = request.getMappingId();
 
-        return SdkClient.request(clientConfig, "DELETE", "/directories/" + SdkClient.encodePathSegment(directoryId) + "/group_role_mappings/" + SdkClient.encodePathSegment(mappingId) + "", null, null, null, new TypeReference<DeleteDirectoryGroupRoleMappingResponse>(){}, "deleteDirectoryGroupRoleMapping", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "DELETE", "/directories/" + SdkClient.encodePathSegment(directoryId) + "/group_role_mappings/" + SdkClient.encodePathSegment(mappingId) + "", null, null, null, new TypeReference<DirectoryGroupRoleMappingDeleted>(){}, "deleteDirectoryGroupRoleMapping", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class)).data;
     }
 
 

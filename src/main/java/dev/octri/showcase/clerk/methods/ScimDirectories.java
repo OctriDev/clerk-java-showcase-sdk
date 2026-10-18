@@ -3,10 +3,11 @@
 
 package dev.octri.showcase.clerk.methods;
 
-import dev.octri.showcase.clerk.models.scim_directories.SCIMDirectories;
 import dev.octri.showcase.clerk.models.scim_directories.SCIMDirectory;
+import dev.octri.showcase.clerk.models.scim_directories.SCIMDirectoryList;
 import dev.octri.showcase.clerk.models.scim_directories.SCIMGroupRoleMapping;
-import dev.octri.showcase.clerk.models.scim_directories.SCIMGroupRoleMappings;
+import dev.octri.showcase.clerk.models.scim_directories.SCIMGroupRoleMappingDeleted;
+import dev.octri.showcase.clerk.models.scim_directories.SCIMGroupRoleMappingList;
 import dev.octri.showcase.clerk.models.shared.DeletedObject;
 import dev.octri.showcase.clerk.models.shared_clerk.ClerkErrors;
 import dev.octri.showcase.clerk.SdkConfig;
@@ -19,22 +20,6 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 public class ScimDirectories {
-
-
-    public static class ListSCIMDirectoriesResponse {
-        public SCIMDirectories data;
-        /**
-         * Total number of directories.
-         */
-        @JsonProperty("total_count") public Long totalCount;
-        @java.lang.Override
-        public String toString() {
-            return "ListSCIMDirectoriesResponse{"
-                + "data=" + data
-                + ", totalCount=" + totalCount
-                + "}";
-        }
-    }
 
 
     public static class CreateSCIMDirectoryGroupRoleMappingsItem {
@@ -66,22 +51,6 @@ public class ScimDirectories {
     }
 
 
-    public static class ListSCIMGroupRoleMappingsResponse {
-        public SCIMGroupRoleMappings data;
-        /**
-         * Total number of SCIM group role mappings in the directory.
-         */
-        @JsonProperty("total_count") public Long totalCount;
-        @java.lang.Override
-        public String toString() {
-            return "ListSCIMGroupRoleMappingsResponse{"
-                + "data=" + data
-                + ", totalCount=" + totalCount
-                + "}";
-        }
-    }
-
-
     public static class ReplaceSCIMGroupRoleMappingsMappingsItem {
         /**
          * The SCIM group ID from the identity provider.
@@ -96,66 +65,6 @@ public class ScimDirectories {
             return "ReplaceSCIMGroupRoleMappingsMappingsItem{"
                 + "scimGroupId=" + scimGroupId
                 + ", roleId=" + roleId
-                + "}";
-        }
-    }
-
-
-    public static class ReplaceSCIMGroupRoleMappingsResponse {
-        public SCIMGroupRoleMappings data;
-        /**
-         * Total number of SCIM group role mappings in the directory.
-         */
-        @JsonProperty("total_count") public Long totalCount;
-        @java.lang.Override
-        public String toString() {
-            return "ReplaceSCIMGroupRoleMappingsResponse{"
-                + "data=" + data
-                + ", totalCount=" + totalCount
-                + "}";
-        }
-    }
-
-    /**
-     * String representing the object's type.
-     */
-    public static final class DeleteSCIMGroupRoleMappingResponseObjectEnum {
-        public static final DeleteSCIMGroupRoleMappingResponseObjectEnum SCIM_GROUP_ROLE_MAPPING = new DeleteSCIMGroupRoleMappingResponseObjectEnum("scim_group_role_mapping");
-        private final String value;
-        private DeleteSCIMGroupRoleMappingResponseObjectEnum(String value) { this.value = java.util.Objects.requireNonNull(value, "value"); }
-        @com.fasterxml.jackson.annotation.JsonCreator(mode = com.fasterxml.jackson.annotation.JsonCreator.Mode.DELEGATING)
-        public static DeleteSCIMGroupRoleMappingResponseObjectEnum fromValue(String value) {
-            if ("scim_group_role_mapping".equals(value)) return SCIM_GROUP_ROLE_MAPPING;
-            return new DeleteSCIMGroupRoleMappingResponseObjectEnum(value);
-        }
-        @com.fasterxml.jackson.annotation.JsonValue public String getValue() { return value; }
-        @java.lang.Override public String toString() { return value; }
-        @java.lang.Override public boolean equals(Object other) {
-            return this == other || (other instanceof DeleteSCIMGroupRoleMappingResponseObjectEnum o && value.equals(o.value));
-        }
-        @java.lang.Override public int hashCode() { return value.hashCode(); }
-    }
-
-
-    public static class DeleteSCIMGroupRoleMappingResponse {
-        /**
-         * String representing the object's type.
-         */
-        public DeleteSCIMGroupRoleMappingResponseObjectEnum object;
-        /**
-         * The ID of the deleted SCIM group role mapping.
-         */
-        public String id;
-        /**
-         * Whether the SCIM group role mapping was successfully deleted.
-         */
-        public Boolean deleted;
-        @java.lang.Override
-        public String toString() {
-            return "DeleteSCIMGroupRoleMappingResponse{"
-                + "object=" + object
-                + ", id=" + id
-                + ", deleted=" + deleted
                 + "}";
         }
     }
@@ -182,14 +91,14 @@ public class ScimDirectories {
     /**
      * Returns a list of all directories for the instance.
      */
-    public static ListSCIMDirectoriesResponse listScimDirectories(SdkConfig.ClientConfig clientConfig, ListScimDirectoriesRequest request) {
+    public static SCIMDirectoryList listScimDirectories(SdkConfig.ClientConfig clientConfig, ListScimDirectoriesRequest request) {
         return listScimDirectories(clientConfig, request, null);
     }
 
     /**
      * Returns a list of all directories for the instance.
      */
-    public static ListSCIMDirectoriesResponse listScimDirectories(SdkConfig.ClientConfig clientConfig, ListScimDirectoriesRequest request, SdkConfig.RequestOptions options) {
+    public static SCIMDirectoryList listScimDirectories(SdkConfig.ClientConfig clientConfig, ListScimDirectoriesRequest request, SdkConfig.RequestOptions options) {
         Long limit = request.getLimit();
         Long offset = request.getOffset();
 
@@ -201,7 +110,7 @@ public class ScimDirectories {
             { Validation.RangeOpts __r = new Validation.RangeOpts(); __r.min = 0d; Validation.validateRange("offset", offset, __r); }
         }
 
-        return SdkClient.request(clientConfig, "GET", "/scim_directories", SdkClient.q("limit", SdkClient.queryValue(limit, "form", true), "offset", SdkClient.queryValue(offset, "form", true)), null, null, new TypeReference<ListSCIMDirectoriesResponse>(){}, "listScimDirectories", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("401", ClerkErrors.class, "403", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "GET", "/scim_directories", SdkClient.q("limit", SdkClient.queryValue(limit, "form", true), "offset", SdkClient.queryValue(offset, "form", true)), null, null, new TypeReference<SCIMDirectoryList>(){}, "listScimDirectories", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("401", ClerkErrors.class, "403", ClerkErrors.class)).data;
     }
 
 
@@ -439,17 +348,17 @@ public class ScimDirectories {
     /**
      * Returns the list of SCIM group to organization role mappings for a directory, ordered by precedence.
      */
-    public static ListSCIMGroupRoleMappingsResponse listScimGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ListScimGroupRoleMappingsRequest request) {
+    public static SCIMGroupRoleMappingList listScimGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ListScimGroupRoleMappingsRequest request) {
         return listScimGroupRoleMappings(clientConfig, request, null);
     }
 
     /**
      * Returns the list of SCIM group to organization role mappings for a directory, ordered by precedence.
      */
-    public static ListSCIMGroupRoleMappingsResponse listScimGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ListScimGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
+    public static SCIMGroupRoleMappingList listScimGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ListScimGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
         String scimDirectoryId = request.getScimDirectoryId();
 
-        return SdkClient.request(clientConfig, "GET", "/scim_directories/" + SdkClient.encodePathSegment(scimDirectoryId) + "/group_role_mappings", null, null, null, new TypeReference<ListSCIMGroupRoleMappingsResponse>(){}, "listScimGroupRoleMappings", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "GET", "/scim_directories/" + SdkClient.encodePathSegment(scimDirectoryId) + "/group_role_mappings", null, null, null, new TypeReference<SCIMGroupRoleMappingList>(){}, "listScimGroupRoleMappings", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class)).data;
     }
 
 
@@ -526,18 +435,18 @@ public class ScimDirectories {
     /**
      * Replaces the entire set of SCIM group role mappings for a directory. The position of each item in the `mappings` array determines its precedence (the first item gets precedence 1). Passing an empty array removes all mappings. Mappings can be replaced while group role mapping is disabled on the directory, but they only take effect once it is enabled.
      */
-    public static ReplaceSCIMGroupRoleMappingsResponse replaceScimGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ReplaceScimGroupRoleMappingsRequest request) {
+    public static SCIMGroupRoleMappingList replaceScimGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ReplaceScimGroupRoleMappingsRequest request) {
         return replaceScimGroupRoleMappings(clientConfig, request, null);
     }
 
     /**
      * Replaces the entire set of SCIM group role mappings for a directory. The position of each item in the `mappings` array determines its precedence (the first item gets precedence 1). Passing an empty array removes all mappings. Mappings can be replaced while group role mapping is disabled on the directory, but they only take effect once it is enabled.
      */
-    public static ReplaceSCIMGroupRoleMappingsResponse replaceScimGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ReplaceScimGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
+    public static SCIMGroupRoleMappingList replaceScimGroupRoleMappings(SdkConfig.ClientConfig clientConfig, ReplaceScimGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
         String scimDirectoryId = request.getScimDirectoryId();
         List<ReplaceSCIMGroupRoleMappingsMappingsItem> mappings = request.getMappings();
 
-        return SdkClient.request(clientConfig, "PUT", "/scim_directories/" + SdkClient.encodePathSegment(scimDirectoryId) + "/group_role_mappings", null, SdkClient.q("mappings", mappings), null, new TypeReference<ReplaceSCIMGroupRoleMappingsResponse>(){}, "replaceScimGroupRoleMappings", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "422", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "PUT", "/scim_directories/" + SdkClient.encodePathSegment(scimDirectoryId) + "/group_role_mappings", null, SdkClient.q("mappings", mappings), null, new TypeReference<SCIMGroupRoleMappingList>(){}, "replaceScimGroupRoleMappings", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "422", ClerkErrors.class)).data;
     }
 
 
@@ -564,18 +473,18 @@ public class ScimDirectories {
     /**
      * Deletes a single SCIM group role mapping. Mappings can be deleted while group role mapping is disabled on the directory, but the change only takes effect once it is enabled.
      */
-    public static DeleteSCIMGroupRoleMappingResponse deleteScimGroupRoleMapping(SdkConfig.ClientConfig clientConfig, DeleteScimGroupRoleMappingRequest request) {
+    public static SCIMGroupRoleMappingDeleted deleteScimGroupRoleMapping(SdkConfig.ClientConfig clientConfig, DeleteScimGroupRoleMappingRequest request) {
         return deleteScimGroupRoleMapping(clientConfig, request, null);
     }
 
     /**
      * Deletes a single SCIM group role mapping. Mappings can be deleted while group role mapping is disabled on the directory, but the change only takes effect once it is enabled.
      */
-    public static DeleteSCIMGroupRoleMappingResponse deleteScimGroupRoleMapping(SdkConfig.ClientConfig clientConfig, DeleteScimGroupRoleMappingRequest request, SdkConfig.RequestOptions options) {
+    public static SCIMGroupRoleMappingDeleted deleteScimGroupRoleMapping(SdkConfig.ClientConfig clientConfig, DeleteScimGroupRoleMappingRequest request, SdkConfig.RequestOptions options) {
         String scimDirectoryId = request.getScimDirectoryId();
         String mappingId = request.getMappingId();
 
-        return SdkClient.request(clientConfig, "DELETE", "/scim_directories/" + SdkClient.encodePathSegment(scimDirectoryId) + "/group_role_mappings/" + SdkClient.encodePathSegment(mappingId) + "", null, null, null, new TypeReference<DeleteSCIMGroupRoleMappingResponse>(){}, "deleteScimGroupRoleMapping", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "DELETE", "/scim_directories/" + SdkClient.encodePathSegment(scimDirectoryId) + "/group_role_mappings/" + SdkClient.encodePathSegment(mappingId) + "", null, null, null, new TypeReference<SCIMGroupRoleMappingDeleted>(){}, "deleteScimGroupRoleMapping", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class)).data;
     }
 
 

@@ -6,101 +6,12 @@ package dev.octri.showcase.clerk.methods;
 import dev.octri.showcase.clerk.models.shared.DeletedObject;
 import dev.octri.showcase.clerk.models.shared_clerk.ClerkErrors;
 import dev.octri.showcase.clerk.models.shared_phone.PhoneNumber;
+import dev.octri.showcase.clerk.models.shared_verification.VerificationResponse;
 import dev.octri.showcase.clerk.SdkConfig;
 import dev.octri.showcase.clerk.SdkClient;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
-import javax.annotation.Nullable;
 
 public class PhoneNumbers {
-
-
-    public static class PreparePhoneNumberVerificationResponse {
-        /**
-         * The type of the verification object.
-         */
-        @Nullable public String object;
-        /**
-         * The ID of the verification. Pass this to attempt_verification.
-         */
-        @Nullable public String id;
-        /**
-         * The status of the verification (unverified, verified, expired, or failed).
-         */
-        @Nullable public String status;
-        /**
-         * The verification strategy (email_code or phone_code).
-         */
-        @Nullable public String strategy;
-        /**
-         * The number of attempts made against this verification.
-         */
-        @Nullable public Long attempts;
-        /**
-         * Unix timestamp (milliseconds) at which the code expires.
-         */
-        @Nullable @JsonProperty("expire_at") public Long expireAt;
-        /**
-         * The channel the code was sent over (phone numbers only).
-         */
-        @Nullable public String channel;
-        @java.lang.Override
-        public String toString() {
-            return "PreparePhoneNumberVerificationResponse{"
-                + "object=" + object
-                + ", id=" + id
-                + ", status=" + status
-                + ", strategy=" + strategy
-                + ", attempts=" + attempts
-                + ", expireAt=" + expireAt
-                + ", channel=" + channel
-                + "}";
-        }
-    }
-
-
-    public static class AttemptPhoneNumberVerificationResponse {
-        /**
-         * The type of the verification object.
-         */
-        @Nullable public String object;
-        /**
-         * The ID of the verification. Pass this to attempt_verification.
-         */
-        @Nullable public String id;
-        /**
-         * The status of the verification (unverified, verified, expired, or failed).
-         */
-        @Nullable public String status;
-        /**
-         * The verification strategy (email_code or phone_code).
-         */
-        @Nullable public String strategy;
-        /**
-         * The number of attempts made against this verification.
-         */
-        @Nullable public Long attempts;
-        /**
-         * Unix timestamp (milliseconds) at which the code expires.
-         */
-        @Nullable @JsonProperty("expire_at") public Long expireAt;
-        /**
-         * The channel the code was sent over (phone numbers only).
-         */
-        @Nullable public String channel;
-        @java.lang.Override
-        public String toString() {
-            return "AttemptPhoneNumberVerificationResponse{"
-                + "object=" + object
-                + ", id=" + id
-                + ", status=" + status
-                + ", strategy=" + strategy
-                + ", attempts=" + attempts
-                + ", expireAt=" + expireAt
-                + ", channel=" + channel
-                + "}";
-        }
-    }
 
     public static final class ReplaceUserPhoneNumberIdentificationStatus {
         public static final ReplaceUserPhoneNumberIdentificationStatus RESERVED = new ReplaceUserPhoneNumberIdentificationStatus("reserved");
@@ -322,17 +233,17 @@ public class PhoneNumbers {
     /**
      * Sends a one-time code to the given phone number so that a backend can verify the user controls it (for example, in a custom, backend-driven sign-in flow). The code is tracked on its own verification; confirm it with attempt_verification.
      */
-    public static PreparePhoneNumberVerificationResponse preparePhoneNumberVerification(SdkConfig.ClientConfig clientConfig, PreparePhoneNumberVerificationRequest request) {
+    public static VerificationResponse preparePhoneNumberVerification(SdkConfig.ClientConfig clientConfig, PreparePhoneNumberVerificationRequest request) {
         return preparePhoneNumberVerification(clientConfig, request, null);
     }
 
     /**
      * Sends a one-time code to the given phone number so that a backend can verify the user controls it (for example, in a custom, backend-driven sign-in flow). The code is tracked on its own verification; confirm it with attempt_verification.
      */
-    public static PreparePhoneNumberVerificationResponse preparePhoneNumberVerification(SdkConfig.ClientConfig clientConfig, PreparePhoneNumberVerificationRequest request, SdkConfig.RequestOptions options) {
+    public static VerificationResponse preparePhoneNumberVerification(SdkConfig.ClientConfig clientConfig, PreparePhoneNumberVerificationRequest request, SdkConfig.RequestOptions options) {
         String phoneNumberId = request.getPhoneNumberId();
 
-        return SdkClient.request(clientConfig, "POST", "/phone_numbers/" + SdkClient.encodePathSegment(phoneNumberId) + "/prepare_verification", null, null, null, new TypeReference<PreparePhoneNumberVerificationResponse>(){}, "preparePhoneNumberVerification", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "429", ClerkErrors.class, "500", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "POST", "/phone_numbers/" + SdkClient.encodePathSegment(phoneNumberId) + "/prepare_verification", null, null, null, new TypeReference<VerificationResponse>(){}, "preparePhoneNumberVerification", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "429", ClerkErrors.class, "500", ClerkErrors.class)).data;
     }
 
 
@@ -362,19 +273,19 @@ public class PhoneNumbers {
     /**
      * Checks a one-time code against the verification identified by verification_id, and returns the verification with its updated status (`verified`, `unverified`, `expired`, or `failed`) and attempt count, so a backend driving its own frontend can react on every attempt — an incorrect or expired code is reported through the status, not as an error. Resubmitting a verification whose code was already accepted is rejected with a `verification_already_verified` error. If the code for this verification could not be sent (the SMS provider refused or failed the send after prepare_verification had returned), the attempt is rejected with a `verification_code_not_sent` error and no attempt is counted; call prepare_verification again to send a new code. If too many codes have been checked for this phone number recently, the attempt is rejected with a `verification_code_too_many_attempts` error and no attempt is counted; the limit is per phone number, so wait for the `Retry-After` period rather than sending a new code. If the code is correct and the phone number is not already verified, it is also marked as verified as a side effect (just as it would be in a frontend verification flow); an already verified phone number is left unchanged. It never creates a session; to sign the user in afterwards, mint a sign-in token.
      */
-    public static AttemptPhoneNumberVerificationResponse attemptPhoneNumberVerification(SdkConfig.ClientConfig clientConfig, AttemptPhoneNumberVerificationRequest request) {
+    public static VerificationResponse attemptPhoneNumberVerification(SdkConfig.ClientConfig clientConfig, AttemptPhoneNumberVerificationRequest request) {
         return attemptPhoneNumberVerification(clientConfig, request, null);
     }
 
     /**
      * Checks a one-time code against the verification identified by verification_id, and returns the verification with its updated status (`verified`, `unverified`, `expired`, or `failed`) and attempt count, so a backend driving its own frontend can react on every attempt — an incorrect or expired code is reported through the status, not as an error. Resubmitting a verification whose code was already accepted is rejected with a `verification_already_verified` error. If the code for this verification could not be sent (the SMS provider refused or failed the send after prepare_verification had returned), the attempt is rejected with a `verification_code_not_sent` error and no attempt is counted; call prepare_verification again to send a new code. If too many codes have been checked for this phone number recently, the attempt is rejected with a `verification_code_too_many_attempts` error and no attempt is counted; the limit is per phone number, so wait for the `Retry-After` period rather than sending a new code. If the code is correct and the phone number is not already verified, it is also marked as verified as a side effect (just as it would be in a frontend verification flow); an already verified phone number is left unchanged. It never creates a session; to sign the user in afterwards, mint a sign-in token.
      */
-    public static AttemptPhoneNumberVerificationResponse attemptPhoneNumberVerification(SdkConfig.ClientConfig clientConfig, AttemptPhoneNumberVerificationRequest request, SdkConfig.RequestOptions options) {
+    public static VerificationResponse attemptPhoneNumberVerification(SdkConfig.ClientConfig clientConfig, AttemptPhoneNumberVerificationRequest request, SdkConfig.RequestOptions options) {
         String phoneNumberId = request.getPhoneNumberId();
         String verificationId = request.getVerificationId();
         String code = request.getCode();
 
-        return SdkClient.request(clientConfig, "POST", "/phone_numbers/" + SdkClient.encodePathSegment(phoneNumberId) + "/attempt_verification", null, SdkClient.q("verification_id", verificationId, "code", code), null, new TypeReference<AttemptPhoneNumberVerificationResponse>(){}, "attemptPhoneNumberVerification", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "422", ClerkErrors.class, "429", ClerkErrors.class, "500", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "POST", "/phone_numbers/" + SdkClient.encodePathSegment(phoneNumberId) + "/attempt_verification", null, SdkClient.q("verification_id", verificationId, "code", code), null, new TypeReference<VerificationResponse>(){}, "attemptPhoneNumberVerification", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "422", ClerkErrors.class, "429", ClerkErrors.class, "500", ClerkErrors.class)).data;
     }
 
 

@@ -7,6 +7,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.octri.showcase.clerk.Validation;
 import java.util.List;
 
+/**
+ * MachineVariant1.
+ * Required object value serialized in the `data[]` wire field.
+ */
+
 public final class MachineVariant1 {
     /**
      * Array of machines this machine has access to.

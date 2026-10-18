@@ -47,11 +47,11 @@ public final class BillingPriceResponse {
      */
     @JsonProperty("annual_monthly_amount") public Long annualMonthlyAmount;
     /**
-     * Required API value serialized in the `fee` wire field.
+     * Required object value serialized in the `fee` wire field.
      */
     @Nullable @JsonProperty(value = "fee", required = true) public CommerceMoneyResponse fee;
     /**
-     * Required API value serialized in the `annual_monthly_fee` wire field.
+     * Required object value serialized in the `annual_monthly_fee` wire field.
      */
     @Nullable @JsonProperty(value = "annual_monthly_fee", required = true) public CommerceMoneyResponse annualMonthlyFee;
     /**

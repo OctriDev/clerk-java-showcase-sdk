@@ -28,15 +28,15 @@ public final class CommercePlan2 {
      */
     public String name;
     /**
-     * Required API value serialized in the `fee` wire field.
+     * Required object value serialized in the `fee` wire field.
      */
     @Nullable @JsonProperty(value = "fee", required = true) public CommerceMoneyResponse fee;
     /**
-     * Required API value serialized in the `annual_monthly_fee` wire field.
+     * Required object value serialized in the `annual_monthly_fee` wire field.
      */
     @Nullable @JsonProperty(value = "annual_monthly_fee", required = true) public CommerceMoneyResponse annualMonthlyFee;
     /**
-     * Required API value serialized in the `annual_fee` wire field.
+     * Required object value serialized in the `annual_fee` wire field.
      */
     @Nullable @JsonProperty(value = "annual_fee", required = true) public CommerceMoneyResponse annualFee;
     /**

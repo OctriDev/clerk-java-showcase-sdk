@@ -5,9 +5,7 @@ package dev.octri.showcase.clerk.methods;
 
 import dev.octri.showcase.clerk.models.shared.AdjustCreditBalanceRequestActionEnum;
 import dev.octri.showcase.clerk.models.shared.InvitationStatusEnum;
-import dev.octri.showcase.clerk.models.users.BiometricCredential;
 import dev.octri.showcase.clerk.models.users.PasswordHasher;
-import dev.octri.showcase.clerk.models.users.TrustedDevice;
 import dev.octri.showcase.clerk.SdkClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -77,38 +75,6 @@ public class Users extends UsersPart2 {
         public String toString() {
             return "DeleteBackupCodeResponse{"
                 + "userId=" + userId
-                + "}";
-        }
-    }
-
-
-    public static class ListUserTrustedDevicesResponse {
-        public List<TrustedDevice> data;
-        /**
-         * Total number of trusted devices
-         */
-        @JsonProperty("total_count") public Long totalCount;
-        @java.lang.Override
-        public String toString() {
-            return "ListUserTrustedDevicesResponse{"
-                + "data=" + data
-                + ", totalCount=" + totalCount
-                + "}";
-        }
-    }
-
-
-    public static class ListUserBiometricCredentialsResponse {
-        public List<BiometricCredential> data;
-        /**
-         * Total number of biometric credentials
-         */
-        @JsonProperty("total_count") public Long totalCount;
-        @java.lang.Override
-        public String toString() {
-            return "ListUserBiometricCredentialsResponse{"
-                + "data=" + data
-                + ", totalCount=" + totalCount
                 + "}";
         }
     }

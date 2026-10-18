@@ -3,24 +3,131 @@
 
 package dev.octri.showcase.clerk.models.users;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.octri.showcase.clerk.Validation;
+import java.util.List;
+import javax.annotation.Nullable;
+
 /**
  * SAMLAccountConnection.
  * Typed representation of the `SAMLAccountConnection` API schema.
  */
 
-@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = SAMLAccountConnection.Deserializer.class)
-public interface SAMLAccountConnection {
-    /** Chooses the branch this payload is shaped like. */
-    final class Deserializer extends com.fasterxml.jackson.databind.JsonDeserializer<SAMLAccountConnection> {
-        @java.lang.Override
-        public SAMLAccountConnection deserialize(
-            com.fasterxml.jackson.core.JsonParser parser,
-            com.fasterxml.jackson.databind.DeserializationContext context)
-            throws java.io.IOException {
-            com.fasterxml.jackson.databind.ObjectMapper mapper =
-                (com.fasterxml.jackson.databind.ObjectMapper) parser.getCodec();
-            com.fasterxml.jackson.databind.JsonNode node = parser.readValueAsTree();
-            return new SAMLAccountConnectionObjectValue(mapper.convertValue(node, new com.fasterxml.jackson.core.type.TypeReference<Object>() {}));
+public final class SAMLAccountConnection {
+    /**
+     * Required `string` value serialized in the `id` wire field.
+     */
+    public String id;
+    /**
+     * Required `string` value serialized in the `name` wire field.
+     */
+    public String name;
+    /**
+     * Required `boolean` value serialized in the `active` wire field.
+     */
+    public Boolean active;
+    /**
+     * Required `string` value serialized in the `provider` wire field.
+     */
+    public String provider;
+    /**
+     * Required `boolean` value serialized in the `sync_user_attributes` wire field.
+     */
+    @JsonProperty("sync_user_attributes") public Boolean syncUserAttributes;
+    /**
+     * Unix timestamp of creation.
+     */
+    @JsonProperty("created_at") public Long createdAt;
+    /**
+     * Unix timestamp of last update.
+     */
+    @JsonProperty("updated_at") public Long updatedAt;
+    /**
+     * Optional `string` value serialized in the `domain` wire field.
+     */
+    @Nullable public String domain;
+    /**
+     * Optional array value serialized in the `domains` wire field.
+     */
+    @Nullable public List<String> domains;
+    /**
+     * Optional `boolean` value serialized in the `allow_subdomains` wire field.
+     */
+    @Nullable @JsonProperty("allow_subdomains") public Boolean allowSubdomains;
+    /**
+     * Optional `boolean` value serialized in the `allow_idp_initiated` wire field.
+     */
+    @Nullable @JsonProperty("allow_idp_initiated") public Boolean allowIdpInitiated;
+    /**
+     * Optional `boolean` value serialized in the `disable_additional_identifications` wire field.
+     */
+    @Nullable @JsonProperty("disable_additional_identifications") public Boolean disableAdditionalIdentifications;
+    private SAMLAccountConnection() {}
+    public static Builder builder() { return new Builder(); }
+    public static final class Builder {
+        private String id;
+        private String name;
+        private Boolean active;
+        private String provider;
+        private Boolean syncUserAttributes;
+        private Long createdAt;
+        private Long updatedAt;
+        private String domain;
+        private List<String> domains;
+        private Boolean allowSubdomains;
+        private Boolean allowIdpInitiated;
+        private Boolean disableAdditionalIdentifications;
+        public Builder id(String value) { this.id = value; return this; }
+        public Builder name(String value) { this.name = value; return this; }
+        public Builder active(Boolean value) { this.active = value; return this; }
+        public Builder provider(String value) { this.provider = value; return this; }
+        public Builder syncUserAttributes(Boolean value) { this.syncUserAttributes = value; return this; }
+        public Builder createdAt(Long value) { this.createdAt = value; return this; }
+        public Builder updatedAt(Long value) { this.updatedAt = value; return this; }
+        public Builder domain(String value) { this.domain = value; return this; }
+        public Builder domains(List<String> value) { this.domains = value; return this; }
+        public Builder allowSubdomains(Boolean value) { this.allowSubdomains = value; return this; }
+        public Builder allowIdpInitiated(Boolean value) { this.allowIdpInitiated = value; return this; }
+        public Builder disableAdditionalIdentifications(Boolean value) { this.disableAdditionalIdentifications = value; return this; }
+        public SAMLAccountConnection build() {
+            SAMLAccountConnection result = new SAMLAccountConnection();
+            Validation.validateRequired("id", this.id);
+            result.id = this.id;
+            Validation.validateRequired("name", this.name);
+            result.name = this.name;
+            Validation.validateRequired("active", this.active);
+            result.active = this.active;
+            Validation.validateRequired("provider", this.provider);
+            result.provider = this.provider;
+            Validation.validateRequired("sync_user_attributes", this.syncUserAttributes);
+            result.syncUserAttributes = this.syncUserAttributes;
+            Validation.validateRequired("created_at", this.createdAt);
+            result.createdAt = this.createdAt;
+            Validation.validateRequired("updated_at", this.updatedAt);
+            result.updatedAt = this.updatedAt;
+            result.domain = this.domain;
+            result.domains = this.domains;
+            result.allowSubdomains = this.allowSubdomains;
+            result.allowIdpInitiated = this.allowIdpInitiated;
+            result.disableAdditionalIdentifications = this.disableAdditionalIdentifications;
+            return result;
         }
+    }
+    @java.lang.Override
+    public String toString() {
+        return "SAMLAccountConnection{"
+            + "id=" + id
+            + ", name=" + name
+            + ", active=" + active
+            + ", provider=" + provider
+            + ", syncUserAttributes=" + syncUserAttributes
+            + ", createdAt=" + createdAt
+            + ", updatedAt=" + updatedAt
+            + ", domain=" + domain
+            + ", domains=" + domains
+            + ", allowSubdomains=" + allowSubdomains
+            + ", allowIdpInitiated=" + allowIdpInitiated
+            + ", disableAdditionalIdentifications=" + disableAdditionalIdentifications
+            + "}";
     }
 }

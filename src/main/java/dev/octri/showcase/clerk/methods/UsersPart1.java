@@ -12,10 +12,12 @@ import dev.octri.showcase.clerk.models.shared_commerce.CommerceCreditLedgerRespo
 import dev.octri.showcase.clerk.models.shared_commerce.CommerceSubscription;
 import dev.octri.showcase.clerk.models.shared_organization.OrganizationInvitationsWithPublicOrganizationData;
 import dev.octri.showcase.clerk.models.shared_organization.OrganizationMemberships;
+import dev.octri.showcase.clerk.models.users.BiometricCredentialList;
 import dev.octri.showcase.clerk.models.users.OAuthAccessToken;
 import dev.octri.showcase.clerk.models.users.PasswordHasher;
 import dev.octri.showcase.clerk.models.users.TotalCount;
 import dev.octri.showcase.clerk.models.users.TrustedDevice;
+import dev.octri.showcase.clerk.models.users.TrustedDeviceList;
 import dev.octri.showcase.clerk.models.users.User;
 import dev.octri.showcase.clerk.SdkConfig;
 import dev.octri.showcase.clerk.SdkClient;
@@ -675,7 +677,7 @@ public class UsersPart1 {
      *   release.
      */
     @Deprecated
-    public static Users.ListUserTrustedDevicesResponse listUserTrustedDevices(SdkConfig.ClientConfig clientConfig, Users.ListUserTrustedDevicesRequest request) {
+    public static TrustedDeviceList listUserTrustedDevices(SdkConfig.ClientConfig clientConfig, Users.ListUserTrustedDevicesRequest request) {
         return listUserTrustedDevices(clientConfig, request, null);
     }
 
@@ -686,10 +688,10 @@ public class UsersPart1 {
      *   release.
      */
     @Deprecated
-    public static Users.ListUserTrustedDevicesResponse listUserTrustedDevices(SdkConfig.ClientConfig clientConfig, Users.ListUserTrustedDevicesRequest request, SdkConfig.RequestOptions options) {
+    public static TrustedDeviceList listUserTrustedDevices(SdkConfig.ClientConfig clientConfig, Users.ListUserTrustedDevicesRequest request, SdkConfig.RequestOptions options) {
         String userId = request.getUserId();
 
-        return SdkClient.request(clientConfig, "GET", "/users/" + SdkClient.encodePathSegment(userId) + "/trusted_devices", null, null, null, new TypeReference<Users.ListUserTrustedDevicesResponse>(){}, "listUserTrustedDevices", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("403", ClerkErrors.class, "404", ClerkErrors.class, "500", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "GET", "/users/" + SdkClient.encodePathSegment(userId) + "/trusted_devices", null, null, null, new TypeReference<TrustedDeviceList>(){}, "listUserTrustedDevices", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("403", ClerkErrors.class, "404", ClerkErrors.class, "500", ClerkErrors.class)).data;
     }
 
     /**
@@ -720,16 +722,16 @@ public class UsersPart1 {
     /**
      * Returns the active biometric credentials enrolled by the user.
      */
-    public static Users.ListUserBiometricCredentialsResponse listUserBiometricCredentials(SdkConfig.ClientConfig clientConfig, Users.ListUserBiometricCredentialsRequest request) {
+    public static BiometricCredentialList listUserBiometricCredentials(SdkConfig.ClientConfig clientConfig, Users.ListUserBiometricCredentialsRequest request) {
         return listUserBiometricCredentials(clientConfig, request, null);
     }
 
     /**
      * Returns the active biometric credentials enrolled by the user.
      */
-    public static Users.ListUserBiometricCredentialsResponse listUserBiometricCredentials(SdkConfig.ClientConfig clientConfig, Users.ListUserBiometricCredentialsRequest request, SdkConfig.RequestOptions options) {
+    public static BiometricCredentialList listUserBiometricCredentials(SdkConfig.ClientConfig clientConfig, Users.ListUserBiometricCredentialsRequest request, SdkConfig.RequestOptions options) {
         String userId = request.getUserId();
 
-        return SdkClient.request(clientConfig, "GET", "/users/" + SdkClient.encodePathSegment(userId) + "/biometric_credentials", null, null, null, new TypeReference<Users.ListUserBiometricCredentialsResponse>(){}, "listUserBiometricCredentials", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("403", ClerkErrors.class, "404", ClerkErrors.class, "500", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "GET", "/users/" + SdkClient.encodePathSegment(userId) + "/biometric_credentials", null, null, null, new TypeReference<BiometricCredentialList>(){}, "listUserBiometricCredentials", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("403", ClerkErrors.class, "404", ClerkErrors.class, "500", ClerkErrors.class)).data;
     }
 }

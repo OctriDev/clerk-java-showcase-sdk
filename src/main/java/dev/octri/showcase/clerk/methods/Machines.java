@@ -4,279 +4,20 @@
 package dev.octri.showcase.clerk.methods;
 
 import dev.octri.showcase.clerk.models.machines.Machine;
+import dev.octri.showcase.clerk.models.machines.MachineCreated;
+import dev.octri.showcase.clerk.models.machines.MachineDeleted;
+import dev.octri.showcase.clerk.models.machines.MachineList;
 import dev.octri.showcase.clerk.models.machines.MachineScope;
-import dev.octri.showcase.clerk.models.machines.MachineWithoutScopedMachines;
+import dev.octri.showcase.clerk.models.machines.MachineScopeDeleted;
+import dev.octri.showcase.clerk.models.machines.MachineSecretKey;
 import dev.octri.showcase.clerk.models.shared_clerk.ClerkErrors;
 import dev.octri.showcase.clerk.SdkConfig;
 import dev.octri.showcase.clerk.SdkClient;
 import dev.octri.showcase.clerk.Validation;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;
-import javax.annotation.Nullable;
 
 public class Machines {
-
-
-    public static class ListMachinesResponse {
-        public List<Machine> data;
-        /**
-         * Total number of machines
-         */
-        @JsonProperty("total_count") public Long totalCount;
-        @java.lang.Override
-        public String toString() {
-            return "ListMachinesResponse{"
-                + "data=" + data
-                + ", totalCount=" + totalCount
-                + "}";
-        }
-    }
-
-    /**
-     * Required enumerated value serialized in the `object` wire field.
-     */
-    public static final class CreateMachineResponseObjectEnum {
-        public static final CreateMachineResponseObjectEnum MACHINE = new CreateMachineResponseObjectEnum("machine");
-        private final String value;
-        private CreateMachineResponseObjectEnum(String value) { this.value = java.util.Objects.requireNonNull(value, "value"); }
-        @com.fasterxml.jackson.annotation.JsonCreator(mode = com.fasterxml.jackson.annotation.JsonCreator.Mode.DELEGATING)
-        public static CreateMachineResponseObjectEnum fromValue(String value) {
-            if ("machine".equals(value)) return MACHINE;
-            return new CreateMachineResponseObjectEnum(value);
-        }
-        @com.fasterxml.jackson.annotation.JsonValue public String getValue() { return value; }
-        @java.lang.Override public String toString() { return value; }
-        @java.lang.Override public boolean equals(Object other) {
-            return this == other || (other instanceof CreateMachineResponseObjectEnum o && value.equals(o.value));
-        }
-        @java.lang.Override public int hashCode() { return value.hashCode(); }
-    }
-
-
-    public static class CreateMachineResponse {
-        /**
-         * Required enumerated value serialized in the `object` wire field.
-         */
-        public CreateMachineResponseObjectEnum object;
-        /**
-         * Unique identifier for the machine.
-         */
-        public String id;
-        /**
-         * The name of the machine.
-         */
-        public String name;
-        /**
-         * The ID of the instance this machine belongs to.
-         */
-        @JsonProperty("instance_id") public String instanceId;
-        /**
-         * Unix timestamp of creation.
-         */
-        @JsonProperty("created_at") public Long createdAt;
-        /**
-         * Unix timestamp of last update.
-         */
-        @JsonProperty("updated_at") public Long updatedAt;
-        /**
-         * Array of machines this machine has access to.
-         */
-        @JsonProperty("scoped_machines") public List<MachineWithoutScopedMachines> scopedMachines;
-        /**
-         * The secret key for the machine, only returned upon creation.
-         */
-        @JsonProperty("secret_key") public String secretKey;
-        /**
-         * The default time-to-live (TTL) in seconds for tokens created by this machine.
-         */
-        @Nullable @JsonProperty("default_token_ttl") public Long defaultTokenTtl;
-        @java.lang.Override
-        public String toString() {
-            return "CreateMachineResponse{"
-                + "object=" + object
-                + ", id=" + id
-                + ", name=" + name
-                + ", instanceId=" + instanceId
-                + ", createdAt=" + createdAt
-                + ", updatedAt=" + updatedAt
-                + ", scopedMachines=" + scopedMachines
-                + ", secretKey=" + secretKey
-                + ", defaultTokenTtl=" + defaultTokenTtl
-                + "}";
-        }
-    }
-
-    /**
-     * String representing the object's type.
-     */
-    public static final class DeleteMachineResponseObjectEnum {
-        public static final DeleteMachineResponseObjectEnum MACHINE = new DeleteMachineResponseObjectEnum("machine");
-        private final String value;
-        private DeleteMachineResponseObjectEnum(String value) { this.value = java.util.Objects.requireNonNull(value, "value"); }
-        @com.fasterxml.jackson.annotation.JsonCreator(mode = com.fasterxml.jackson.annotation.JsonCreator.Mode.DELEGATING)
-        public static DeleteMachineResponseObjectEnum fromValue(String value) {
-            if ("machine".equals(value)) return MACHINE;
-            return new DeleteMachineResponseObjectEnum(value);
-        }
-        @com.fasterxml.jackson.annotation.JsonValue public String getValue() { return value; }
-        @java.lang.Override public String toString() { return value; }
-        @java.lang.Override public boolean equals(Object other) {
-            return this == other || (other instanceof DeleteMachineResponseObjectEnum o && value.equals(o.value));
-        }
-        @java.lang.Override public int hashCode() { return value.hashCode(); }
-    }
-
-
-    public static class DeleteMachineResponse {
-        /**
-         * String representing the object's type.
-         */
-        public DeleteMachineResponseObjectEnum object;
-        /**
-         * The ID of the deleted machine
-         */
-        public String id;
-        /**
-         * Whether the machine was successfully deleted
-         */
-        public Boolean deleted;
-        @java.lang.Override
-        public String toString() {
-            return "DeleteMachineResponse{"
-                + "object=" + object
-                + ", id=" + id
-                + ", deleted=" + deleted
-                + "}";
-        }
-    }
-
-    /**
-     * String representing the object's type.
-     */
-    public static final class GetMachineSecretKeyResponseObjectEnum {
-        public static final GetMachineSecretKeyResponseObjectEnum MACHINE_SECRET_KEY = new GetMachineSecretKeyResponseObjectEnum("machine_secret_key");
-        private final String value;
-        private GetMachineSecretKeyResponseObjectEnum(String value) { this.value = java.util.Objects.requireNonNull(value, "value"); }
-        @com.fasterxml.jackson.annotation.JsonCreator(mode = com.fasterxml.jackson.annotation.JsonCreator.Mode.DELEGATING)
-        public static GetMachineSecretKeyResponseObjectEnum fromValue(String value) {
-            if ("machine_secret_key".equals(value)) return MACHINE_SECRET_KEY;
-            return new GetMachineSecretKeyResponseObjectEnum(value);
-        }
-        @com.fasterxml.jackson.annotation.JsonValue public String getValue() { return value; }
-        @java.lang.Override public String toString() { return value; }
-        @java.lang.Override public boolean equals(Object other) {
-            return this == other || (other instanceof GetMachineSecretKeyResponseObjectEnum o && value.equals(o.value));
-        }
-        @java.lang.Override public int hashCode() { return value.hashCode(); }
-    }
-
-
-    public static class GetMachineSecretKeyResponse {
-        /**
-         * String representing the object's type.
-         */
-        public GetMachineSecretKeyResponseObjectEnum object;
-        /**
-         * The secret key for the machine.
-         */
-        public String secret;
-        @java.lang.Override
-        public String toString() {
-            return "GetMachineSecretKeyResponse{"
-                + "object=" + object
-                + ", secret=" + secret
-                + "}";
-        }
-    }
-
-    /**
-     * String representing the object's type.
-     */
-    public static final class RotateMachineSecretKeyResponseObjectEnum {
-        public static final RotateMachineSecretKeyResponseObjectEnum MACHINE_SECRET_KEY = new RotateMachineSecretKeyResponseObjectEnum("machine_secret_key");
-        private final String value;
-        private RotateMachineSecretKeyResponseObjectEnum(String value) { this.value = java.util.Objects.requireNonNull(value, "value"); }
-        @com.fasterxml.jackson.annotation.JsonCreator(mode = com.fasterxml.jackson.annotation.JsonCreator.Mode.DELEGATING)
-        public static RotateMachineSecretKeyResponseObjectEnum fromValue(String value) {
-            if ("machine_secret_key".equals(value)) return MACHINE_SECRET_KEY;
-            return new RotateMachineSecretKeyResponseObjectEnum(value);
-        }
-        @com.fasterxml.jackson.annotation.JsonValue public String getValue() { return value; }
-        @java.lang.Override public String toString() { return value; }
-        @java.lang.Override public boolean equals(Object other) {
-            return this == other || (other instanceof RotateMachineSecretKeyResponseObjectEnum o && value.equals(o.value));
-        }
-        @java.lang.Override public int hashCode() { return value.hashCode(); }
-    }
-
-
-    public static class RotateMachineSecretKeyResponse {
-        /**
-         * String representing the object's type.
-         */
-        public RotateMachineSecretKeyResponseObjectEnum object;
-        /**
-         * The secret key for the machine.
-         */
-        public String secret;
-        @java.lang.Override
-        public String toString() {
-            return "RotateMachineSecretKeyResponse{"
-                + "object=" + object
-                + ", secret=" + secret
-                + "}";
-        }
-    }
-
-    /**
-     * String representing the object's type.
-     */
-    public static final class DeleteMachineScopeResponseObjectEnum {
-        public static final DeleteMachineScopeResponseObjectEnum MACHINE_SCOPE = new DeleteMachineScopeResponseObjectEnum("machine_scope");
-        private final String value;
-        private DeleteMachineScopeResponseObjectEnum(String value) { this.value = java.util.Objects.requireNonNull(value, "value"); }
-        @com.fasterxml.jackson.annotation.JsonCreator(mode = com.fasterxml.jackson.annotation.JsonCreator.Mode.DELEGATING)
-        public static DeleteMachineScopeResponseObjectEnum fromValue(String value) {
-            if ("machine_scope".equals(value)) return MACHINE_SCOPE;
-            return new DeleteMachineScopeResponseObjectEnum(value);
-        }
-        @com.fasterxml.jackson.annotation.JsonValue public String getValue() { return value; }
-        @java.lang.Override public String toString() { return value; }
-        @java.lang.Override public boolean equals(Object other) {
-            return this == other || (other instanceof DeleteMachineScopeResponseObjectEnum o && value.equals(o.value));
-        }
-        @java.lang.Override public int hashCode() { return value.hashCode(); }
-    }
-
-
-    public static class DeleteMachineScopeResponse {
-        /**
-         * String representing the object's type.
-         */
-        public DeleteMachineScopeResponseObjectEnum object;
-        /**
-         * The ID of the machine that had access to the target machine
-         */
-        @JsonProperty("from_machine_id") public String fromMachineId;
-        /**
-         * The ID of the machine that was being accessed
-         */
-        @JsonProperty("to_machine_id") public String toMachineId;
-        /**
-         * Whether the machine scope was successfully deleted
-         */
-        public Boolean deleted;
-        @java.lang.Override
-        public String toString() {
-            return "DeleteMachineScopeResponse{"
-                + "object=" + object
-                + ", fromMachineId=" + fromMachineId
-                + ", toMachineId=" + toMachineId
-                + ", deleted=" + deleted
-                + "}";
-        }
-    }
 
     public static class ListMachinesRequest {
 
@@ -306,14 +47,14 @@ public class Machines {
     /**
      * This request returns the list of machines for an instance. The machines are ordered by descending creation date (i.e. most recent machines will be returned first)
      */
-    public static ListMachinesResponse listMachines(SdkConfig.ClientConfig clientConfig, ListMachinesRequest request) {
+    public static MachineList listMachines(SdkConfig.ClientConfig clientConfig, ListMachinesRequest request) {
         return listMachines(clientConfig, request, null);
     }
 
     /**
      * This request returns the list of machines for an instance. The machines are ordered by descending creation date (i.e. most recent machines will be returned first)
      */
-    public static ListMachinesResponse listMachines(SdkConfig.ClientConfig clientConfig, ListMachinesRequest request, SdkConfig.RequestOptions options) {
+    public static MachineList listMachines(SdkConfig.ClientConfig clientConfig, ListMachinesRequest request, SdkConfig.RequestOptions options) {
         Long limit = request.getLimit();
         Long offset = request.getOffset();
         String query = request.getQuery();
@@ -327,7 +68,7 @@ public class Machines {
             { Validation.RangeOpts __r = new Validation.RangeOpts(); __r.min = 0d; Validation.validateRange("offset", offset, __r); }
         }
 
-        return SdkClient.request(clientConfig, "GET", "/machines", SdkClient.q("limit", SdkClient.queryValue(limit, "form", true), "offset", SdkClient.queryValue(offset, "form", true), "query", SdkClient.queryValue(query, "form", true), "order_by", SdkClient.queryValue(orderBy, "form", true)), null, null, new TypeReference<ListMachinesResponse>(){}, "listMachines", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "422", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "GET", "/machines", SdkClient.q("limit", SdkClient.queryValue(limit, "form", true), "offset", SdkClient.queryValue(offset, "form", true), "query", SdkClient.queryValue(query, "form", true), "order_by", SdkClient.queryValue(orderBy, "form", true)), null, null, new TypeReference<MachineList>(){}, "listMachines", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "422", ClerkErrors.class)).data;
     }
 
 
@@ -359,7 +100,7 @@ public class Machines {
      *
      * Creates a new machine.
      */
-    public static CreateMachineResponse createMachine(SdkConfig.ClientConfig clientConfig, CreateMachineRequest request) {
+    public static MachineCreated createMachine(SdkConfig.ClientConfig clientConfig, CreateMachineRequest request) {
         return createMachine(clientConfig, request, null);
     }
 
@@ -368,7 +109,7 @@ public class Machines {
      *
      * Creates a new machine.
      */
-    public static CreateMachineResponse createMachine(SdkConfig.ClientConfig clientConfig, CreateMachineRequest request, SdkConfig.RequestOptions options) {
+    public static MachineCreated createMachine(SdkConfig.ClientConfig clientConfig, CreateMachineRequest request, SdkConfig.RequestOptions options) {
         String name = request.getName();
         List<String> scopedMachines = request.getScopedMachines();
         Long defaultTokenTtl = request.getDefaultTokenTtl();
@@ -383,7 +124,7 @@ public class Machines {
             { Validation.RangeOpts __r = new Validation.RangeOpts(); __r.min = 1d; __r.max = 315360000d; Validation.validateRange("default_token_ttl", defaultTokenTtl, __r); }
         }
 
-        return SdkClient.request(clientConfig, "POST", "/machines", null, SdkClient.q("name", name, "scoped_machines", SdkClient.omitIfNull(scopedMachines), "default_token_ttl", SdkClient.omitIfNull(defaultTokenTtl)), null, new TypeReference<CreateMachineResponse>(){}, "createMachine", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "422", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "POST", "/machines", null, SdkClient.q("name", name, "scoped_machines", SdkClient.omitIfNull(scopedMachines), "default_token_ttl", SdkClient.omitIfNull(defaultTokenTtl)), null, new TypeReference<MachineCreated>(){}, "createMachine", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "422", ClerkErrors.class)).data;
     }
 
 
@@ -497,7 +238,7 @@ public class Machines {
      *
      * Deletes a machine.
      */
-    public static DeleteMachineResponse deleteMachine(SdkConfig.ClientConfig clientConfig, DeleteMachineRequest request) {
+    public static MachineDeleted deleteMachine(SdkConfig.ClientConfig clientConfig, DeleteMachineRequest request) {
         return deleteMachine(clientConfig, request, null);
     }
 
@@ -506,10 +247,10 @@ public class Machines {
      *
      * Deletes a machine.
      */
-    public static DeleteMachineResponse deleteMachine(SdkConfig.ClientConfig clientConfig, DeleteMachineRequest request, SdkConfig.RequestOptions options) {
+    public static MachineDeleted deleteMachine(SdkConfig.ClientConfig clientConfig, DeleteMachineRequest request, SdkConfig.RequestOptions options) {
         String machineId = request.getMachineId();
 
-        return SdkClient.request(clientConfig, "DELETE", "/machines/" + SdkClient.encodePathSegment(machineId) + "", null, null, null, new TypeReference<DeleteMachineResponse>(){}, "deleteMachine", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "422", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "DELETE", "/machines/" + SdkClient.encodePathSegment(machineId) + "", null, null, null, new TypeReference<MachineDeleted>(){}, "deleteMachine", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "422", ClerkErrors.class)).data;
     }
 
 
@@ -535,7 +276,7 @@ public class Machines {
      *
      * Returns the secret key for a machine.
      */
-    public static GetMachineSecretKeyResponse getMachineSecretKey(SdkConfig.ClientConfig clientConfig, GetMachineSecretKeyRequest request) {
+    public static MachineSecretKey getMachineSecretKey(SdkConfig.ClientConfig clientConfig, GetMachineSecretKeyRequest request) {
         return getMachineSecretKey(clientConfig, request, null);
     }
 
@@ -544,10 +285,10 @@ public class Machines {
      *
      * Returns the secret key for a machine.
      */
-    public static GetMachineSecretKeyResponse getMachineSecretKey(SdkConfig.ClientConfig clientConfig, GetMachineSecretKeyRequest request, SdkConfig.RequestOptions options) {
+    public static MachineSecretKey getMachineSecretKey(SdkConfig.ClientConfig clientConfig, GetMachineSecretKeyRequest request, SdkConfig.RequestOptions options) {
         String machineId = request.getMachineId();
 
-        return SdkClient.request(clientConfig, "GET", "/machines/" + SdkClient.encodePathSegment(machineId) + "/secret_key", null, null, null, new TypeReference<GetMachineSecretKeyResponse>(){}, "getMachineSecretKey", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "GET", "/machines/" + SdkClient.encodePathSegment(machineId) + "/secret_key", null, null, null, new TypeReference<MachineSecretKey>(){}, "getMachineSecretKey", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class)).data;
     }
 
 
@@ -574,20 +315,20 @@ public class Machines {
     /**
      * Rotates the machine's secret key. When the secret key is rotated, make sure to update it in your machine/application. The previous secret key will remain valid for the duration specified by the previous_token_ttl parameter.
      */
-    public static RotateMachineSecretKeyResponse rotateMachineSecretKey(SdkConfig.ClientConfig clientConfig, RotateMachineSecretKeyRequest request) {
+    public static MachineSecretKey rotateMachineSecretKey(SdkConfig.ClientConfig clientConfig, RotateMachineSecretKeyRequest request) {
         return rotateMachineSecretKey(clientConfig, request, null);
     }
 
     /**
      * Rotates the machine's secret key. When the secret key is rotated, make sure to update it in your machine/application. The previous secret key will remain valid for the duration specified by the previous_token_ttl parameter.
      */
-    public static RotateMachineSecretKeyResponse rotateMachineSecretKey(SdkConfig.ClientConfig clientConfig, RotateMachineSecretKeyRequest request, SdkConfig.RequestOptions options) {
+    public static MachineSecretKey rotateMachineSecretKey(SdkConfig.ClientConfig clientConfig, RotateMachineSecretKeyRequest request, SdkConfig.RequestOptions options) {
         String machineId = request.getMachineId();
         Long previousTokenTtl = request.getPreviousTokenTtl();
 
         { Validation.RangeOpts __r = new Validation.RangeOpts(); __r.min = 0d; __r.max = 28800d; Validation.validateRange("previous_token_ttl", previousTokenTtl, __r); }
 
-        return SdkClient.request(clientConfig, "POST", "/machines/" + SdkClient.encodePathSegment(machineId) + "/secret_key/rotate", null, SdkClient.q("previous_token_ttl", previousTokenTtl), null, new TypeReference<RotateMachineSecretKeyResponse>(){}, "rotateMachineSecretKey", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "422", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "POST", "/machines/" + SdkClient.encodePathSegment(machineId) + "/secret_key/rotate", null, SdkClient.q("previous_token_ttl", previousTokenTtl), null, new TypeReference<MachineSecretKey>(){}, "rotateMachineSecretKey", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "422", ClerkErrors.class)).data;
     }
 
 
@@ -652,18 +393,18 @@ public class Machines {
     /**
      * Deletes a machine scope, removing access from one machine to another.
      */
-    public static DeleteMachineScopeResponse deleteMachineScope(SdkConfig.ClientConfig clientConfig, DeleteMachineScopeRequest request) {
+    public static MachineScopeDeleted deleteMachineScope(SdkConfig.ClientConfig clientConfig, DeleteMachineScopeRequest request) {
         return deleteMachineScope(clientConfig, request, null);
     }
 
     /**
      * Deletes a machine scope, removing access from one machine to another.
      */
-    public static DeleteMachineScopeResponse deleteMachineScope(SdkConfig.ClientConfig clientConfig, DeleteMachineScopeRequest request, SdkConfig.RequestOptions options) {
+    public static MachineScopeDeleted deleteMachineScope(SdkConfig.ClientConfig clientConfig, DeleteMachineScopeRequest request, SdkConfig.RequestOptions options) {
         String machineId = request.getMachineId();
         String otherMachineId = request.getOtherMachineId();
 
-        return SdkClient.request(clientConfig, "DELETE", "/machines/" + SdkClient.encodePathSegment(machineId) + "/scopes/" + SdkClient.encodePathSegment(otherMachineId) + "", null, null, null, new TypeReference<DeleteMachineScopeResponse>(){}, "deleteMachineScope", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "422", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "DELETE", "/machines/" + SdkClient.encodePathSegment(machineId) + "/scopes/" + SdkClient.encodePathSegment(otherMachineId) + "", null, null, null, new TypeReference<MachineScopeDeleted>(){}, "deleteMachineScope", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("400", ClerkErrors.class, "401", ClerkErrors.class, "403", ClerkErrors.class, "404", ClerkErrors.class, "422", ClerkErrors.class)).data;
     }
 
 
