@@ -14,11 +14,11 @@ import javax.annotation.Nullable;
 
 public final class CommerceCreditsResponse {
     /**
-     * Required API value serialized in the `proration` wire field.
+     * Required object value serialized in the `proration` wire field.
      */
     @Nullable @JsonProperty(value = "proration", required = true) public CommerceProrationCreditDetailResponse proration;
     /**
-     * Required API value serialized in the `payer` wire field.
+     * Required object value serialized in the `payer` wire field.
      */
     @Nullable @JsonProperty(value = "payer", required = true) public CommercePayerCreditResponse payer;
     /**

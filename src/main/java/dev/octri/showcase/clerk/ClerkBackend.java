@@ -8,6 +8,7 @@ import dev.octri.showcase.clerk.models.agent_tasks.AgentTask;
 import dev.octri.showcase.clerk.models.allow_list_block_list.AllowlistIdentifier;
 import dev.octri.showcase.clerk.models.allow_list_block_list.BlocklistIdentifier;
 import dev.octri.showcase.clerk.models.allow_list_block_list.BlocklistIdentifiers;
+import dev.octri.showcase.clerk.models.beta_features.InstanceSettings;
 import dev.octri.showcase.clerk.models.billing.BillingPriceResponse;
 import dev.octri.showcase.clerk.models.billing.BillingStatement;
 import dev.octri.showcase.clerk.models.billing.CommerceDiscountRedemptionResponse;
@@ -21,6 +22,9 @@ import dev.octri.showcase.clerk.models.billing.PaginatedCommerceSubscriptionItem
 import dev.octri.showcase.clerk.models.clients.Client;
 import dev.octri.showcase.clerk.models.directories.Directory;
 import dev.octri.showcase.clerk.models.directories.DirectoryGroupRoleMapping;
+import dev.octri.showcase.clerk.models.directories.DirectoryGroupRoleMappingDeleted;
+import dev.octri.showcase.clerk.models.directories.DirectoryGroupRoleMappingList;
+import dev.octri.showcase.clerk.models.directories.DirectoryList;
 import dev.octri.showcase.clerk.models.domains.Domain;
 import dev.octri.showcase.clerk.models.domains.Domains;
 import dev.octri.showcase.clerk.models.email_sms_templates.Template;
@@ -34,10 +38,17 @@ import dev.octri.showcase.clerk.models.instance_settings.InstanceProtect;
 import dev.octri.showcase.clerk.models.instance_settings.InstanceRestrictions;
 import dev.octri.showcase.clerk.models.instance_settings.OAuthApplicationSettings;
 import dev.octri.showcase.clerk.models.instance_settings.OrganizationSettings;
+import dev.octri.showcase.clerk.models.invitations.InvitationRevoked;
 import dev.octri.showcase.clerk.models.jwks.JWKS;
 import dev.octri.showcase.clerk.models.jwt_templates.JWTTemplate;
 import dev.octri.showcase.clerk.models.machines.Machine;
+import dev.octri.showcase.clerk.models.machines.MachineCreated;
+import dev.octri.showcase.clerk.models.machines.MachineDeleted;
+import dev.octri.showcase.clerk.models.machines.MachineList;
 import dev.octri.showcase.clerk.models.machines.MachineScope;
+import dev.octri.showcase.clerk.models.machines.MachineScopeDeleted;
+import dev.octri.showcase.clerk.models.machines.MachineSecretKey;
+import dev.octri.showcase.clerk.models.oauth_access_tokens.VerifyOAuthAccessTokenResponse;
 import dev.octri.showcase.clerk.models.oauth_applications.OAuthApplication;
 import dev.octri.showcase.clerk.models.oauth_applications.OAuthApplicationWithSecret;
 import dev.octri.showcase.clerk.models.oauth_applications.OAuthApplications;
@@ -56,7 +67,10 @@ import dev.octri.showcase.clerk.models.role_sets.RoleSets;
 import dev.octri.showcase.clerk.models.saml_connections.SAMLConnection;
 import dev.octri.showcase.clerk.models.saml_connections.SAMLConnections;
 import dev.octri.showcase.clerk.models.scim_directories.SCIMDirectory;
+import dev.octri.showcase.clerk.models.scim_directories.SCIMDirectoryList;
 import dev.octri.showcase.clerk.models.scim_directories.SCIMGroupRoleMapping;
+import dev.octri.showcase.clerk.models.scim_directories.SCIMGroupRoleMappingDeleted;
+import dev.octri.showcase.clerk.models.scim_directories.SCIMGroupRoleMappingList;
 import dev.octri.showcase.clerk.models.sessions.Reverification;
 import dev.octri.showcase.clerk.models.sessions.SessionRefresh;
 import dev.octri.showcase.clerk.models.shared.DeletedObject;
@@ -74,16 +88,20 @@ import dev.octri.showcase.clerk.models.shared_organization.OrganizationMembershi
 import dev.octri.showcase.clerk.models.shared_organization.OrganizationMemberships;
 import dev.octri.showcase.clerk.models.shared_phone.PhoneNumber;
 import dev.octri.showcase.clerk.models.shared_session.Session;
+import dev.octri.showcase.clerk.models.shared_verification.VerificationResponse;
 import dev.octri.showcase.clerk.models.sign_in_tokens.SignInToken;
 import dev.octri.showcase.clerk.models.sign_ups.SignUp;
 import dev.octri.showcase.clerk.models.sso_bypass.SSOBypassAllowlistUser;
 import dev.octri.showcase.clerk.models.sso_bypass.SSOBypassAllowlistUsers;
 import dev.octri.showcase.clerk.models.testing_tokens.TestingToken;
 import dev.octri.showcase.clerk.models.users.BiometricCredential;
+import dev.octri.showcase.clerk.models.users.BiometricCredentialList;
 import dev.octri.showcase.clerk.models.users.OAuthAccessToken;
 import dev.octri.showcase.clerk.models.users.TotalCount;
 import dev.octri.showcase.clerk.models.users.TrustedDevice;
+import dev.octri.showcase.clerk.models.users.TrustedDeviceList;
 import dev.octri.showcase.clerk.models.users.User;
+import dev.octri.showcase.clerk.models.waitlist_entries.WaitlistEntries;
 import dev.octri.showcase.clerk.models.waitlist_entries.WaitlistEntry;
 import dev.octri.showcase.clerk.models.webhooks.SvixURL;
 import dev.octri.showcase.clerk.SdkConfig;
@@ -103,7 +121,7 @@ import dev.octri.showcase.clerk.methods.AllowListBlockList;
 import dev.octri.showcase.clerk.methods.BetaFeatures;
 import dev.octri.showcase.clerk.methods.ActorTokens;
 import dev.octri.showcase.clerk.methods.DomainsApi;
-import dev.octri.showcase.clerk.methods.InstanceSettings;
+import dev.octri.showcase.clerk.methods.InstanceSettingsApi;
 import dev.octri.showcase.clerk.methods.Webhooks;
 import dev.octri.showcase.clerk.methods.JwtTemplates;
 import dev.octri.showcase.clerk.methods.Machines;
@@ -121,7 +139,7 @@ import dev.octri.showcase.clerk.methods.EnterpriseConnectionsApi;
 import dev.octri.showcase.clerk.methods.SsoBypass;
 import dev.octri.showcase.clerk.methods.TestingTokens;
 import dev.octri.showcase.clerk.methods.AgentTasks;
-import dev.octri.showcase.clerk.methods.WaitlistEntries;
+import dev.octri.showcase.clerk.methods.WaitlistEntriesApi;
 import dev.octri.showcase.clerk.methods.Billing;
 import dev.octri.showcase.clerk.methods.OrganizationPermissions;
 import dev.octri.showcase.clerk.methods.RoleSetsApi;
@@ -435,28 +453,28 @@ public class ClerkBackend {
         /**
          * Sends a one-time code to the given email address so that a backend can verify the user controls it (for example, in a custom, backend-driven sign-in flow). The code is tracked on its own verification; confirm it with attempt_verification.
          */
-        public EmailAddresses.PrepareEmailAddressVerificationResponse prepareEmailAddressVerification(EmailAddresses.PrepareEmailAddressVerificationRequest request) {
+        public VerificationResponse prepareEmailAddressVerification(EmailAddresses.PrepareEmailAddressVerificationRequest request) {
             return EmailAddresses.prepareEmailAddressVerification(this.clientConfig, request);
         }
 
         /**
          * Sends a one-time code to the given email address so that a backend can verify the user controls it (for example, in a custom, backend-driven sign-in flow). The code is tracked on its own verification; confirm it with attempt_verification.
          */
-        public EmailAddresses.PrepareEmailAddressVerificationResponse prepareEmailAddressVerification(EmailAddresses.PrepareEmailAddressVerificationRequest request, SdkConfig.RequestOptions options) {
+        public VerificationResponse prepareEmailAddressVerification(EmailAddresses.PrepareEmailAddressVerificationRequest request, SdkConfig.RequestOptions options) {
             return EmailAddresses.prepareEmailAddressVerification(this.clientConfig, request, options);
         }
 
         /**
          * Checks a one-time code against the verification identified by verification_id, and returns the verification with its updated status (`verified`, `unverified`, `expired`, or `failed`) and attempt count, so a backend driving its own frontend can react on every attempt — an incorrect or expired code is reported through the status, not as an error. Resubmitting a verification whose code was already accepted is rejected with a `verification_already_verified` error. If the code is correct and the email address is not already verified, it is also marked as verified as a side effect (just as it would be in a frontend verification flow); an already verified email address is left unchanged. It never creates a session; to sign the user in afterwards, mint a sign-in token.
          */
-        public EmailAddresses.AttemptEmailAddressVerificationResponse attemptEmailAddressVerification(EmailAddresses.AttemptEmailAddressVerificationRequest request) {
+        public VerificationResponse attemptEmailAddressVerification(EmailAddresses.AttemptEmailAddressVerificationRequest request) {
             return EmailAddresses.attemptEmailAddressVerification(this.clientConfig, request);
         }
 
         /**
          * Checks a one-time code against the verification identified by verification_id, and returns the verification with its updated status (`verified`, `unverified`, `expired`, or `failed`) and attempt count, so a backend driving its own frontend can react on every attempt — an incorrect or expired code is reported through the status, not as an error. Resubmitting a verification whose code was already accepted is rejected with a `verification_already_verified` error. If the code is correct and the email address is not already verified, it is also marked as verified as a side effect (just as it would be in a frontend verification flow); an already verified email address is left unchanged. It never creates a session; to sign the user in afterwards, mint a sign-in token.
          */
-        public EmailAddresses.AttemptEmailAddressVerificationResponse attemptEmailAddressVerification(EmailAddresses.AttemptEmailAddressVerificationRequest request, SdkConfig.RequestOptions options) {
+        public VerificationResponse attemptEmailAddressVerification(EmailAddresses.AttemptEmailAddressVerificationRequest request, SdkConfig.RequestOptions options) {
             return EmailAddresses.attemptEmailAddressVerification(this.clientConfig, request, options);
         }
 
@@ -555,28 +573,28 @@ public class ClerkBackend {
         /**
          * Sends a one-time code to the given phone number so that a backend can verify the user controls it (for example, in a custom, backend-driven sign-in flow). The code is tracked on its own verification; confirm it with attempt_verification.
          */
-        public PhoneNumbers.PreparePhoneNumberVerificationResponse prepareVerification(PhoneNumbers.PreparePhoneNumberVerificationRequest request) {
+        public VerificationResponse prepareVerification(PhoneNumbers.PreparePhoneNumberVerificationRequest request) {
             return PhoneNumbers.preparePhoneNumberVerification(this.clientConfig, request);
         }
 
         /**
          * Sends a one-time code to the given phone number so that a backend can verify the user controls it (for example, in a custom, backend-driven sign-in flow). The code is tracked on its own verification; confirm it with attempt_verification.
          */
-        public PhoneNumbers.PreparePhoneNumberVerificationResponse prepareVerification(PhoneNumbers.PreparePhoneNumberVerificationRequest request, SdkConfig.RequestOptions options) {
+        public VerificationResponse prepareVerification(PhoneNumbers.PreparePhoneNumberVerificationRequest request, SdkConfig.RequestOptions options) {
             return PhoneNumbers.preparePhoneNumberVerification(this.clientConfig, request, options);
         }
 
         /**
          * Checks a one-time code against the verification identified by verification_id, and returns the verification with its updated status (`verified`, `unverified`, `expired`, or `failed`) and attempt count, so a backend driving its own frontend can react on every attempt — an incorrect or expired code is reported through the status, not as an error. Resubmitting a verification whose code was already accepted is rejected with a `verification_already_verified` error. If the code for this verification could not be sent (the SMS provider refused or failed the send after prepare_verification had returned), the attempt is rejected with a `verification_code_not_sent` error and no attempt is counted; call prepare_verification again to send a new code. If too many codes have been checked for this phone number recently, the attempt is rejected with a `verification_code_too_many_attempts` error and no attempt is counted; the limit is per phone number, so wait for the `Retry-After` period rather than sending a new code. If the code is correct and the phone number is not already verified, it is also marked as verified as a side effect (just as it would be in a frontend verification flow); an already verified phone number is left unchanged. It never creates a session; to sign the user in afterwards, mint a sign-in token.
          */
-        public PhoneNumbers.AttemptPhoneNumberVerificationResponse attemptVerification(PhoneNumbers.AttemptPhoneNumberVerificationRequest request) {
+        public VerificationResponse attemptVerification(PhoneNumbers.AttemptPhoneNumberVerificationRequest request) {
             return PhoneNumbers.attemptPhoneNumberVerification(this.clientConfig, request);
         }
 
         /**
          * Checks a one-time code against the verification identified by verification_id, and returns the verification with its updated status (`verified`, `unverified`, `expired`, or `failed`) and attempt count, so a backend driving its own frontend can react on every attempt — an incorrect or expired code is reported through the status, not as an error. Resubmitting a verification whose code was already accepted is rejected with a `verification_already_verified` error. If the code for this verification could not be sent (the SMS provider refused or failed the send after prepare_verification had returned), the attempt is rejected with a `verification_code_not_sent` error and no attempt is counted; call prepare_verification again to send a new code. If too many codes have been checked for this phone number recently, the attempt is rejected with a `verification_code_too_many_attempts` error and no attempt is counted; the limit is per phone number, so wait for the `Retry-After` period rather than sending a new code. If the code is correct and the phone number is not already verified, it is also marked as verified as a side effect (just as it would be in a frontend verification flow); an already verified phone number is left unchanged. It never creates a session; to sign the user in afterwards, mint a sign-in token.
          */
-        public PhoneNumbers.AttemptPhoneNumberVerificationResponse attemptVerification(PhoneNumbers.AttemptPhoneNumberVerificationRequest request, SdkConfig.RequestOptions options) {
+        public VerificationResponse attemptVerification(PhoneNumbers.AttemptPhoneNumberVerificationRequest request, SdkConfig.RequestOptions options) {
             return PhoneNumbers.attemptPhoneNumberVerification(this.clientConfig, request, options);
         }
 
@@ -1311,7 +1329,7 @@ public class ClerkBackend {
          *   release.
          */
         @Deprecated
-        public Users.ListUserTrustedDevicesResponse listTrustedDevices(Users.ListUserTrustedDevicesRequest request) {
+        public TrustedDeviceList listTrustedDevices(Users.ListUserTrustedDevicesRequest request) {
             return Users.listUserTrustedDevices(this.clientConfig, request);
         }
 
@@ -1322,7 +1340,7 @@ public class ClerkBackend {
          *   release.
          */
         @Deprecated
-        public Users.ListUserTrustedDevicesResponse listTrustedDevices(Users.ListUserTrustedDevicesRequest request, SdkConfig.RequestOptions options) {
+        public TrustedDeviceList listTrustedDevices(Users.ListUserTrustedDevicesRequest request, SdkConfig.RequestOptions options) {
             return Users.listUserTrustedDevices(this.clientConfig, request, options);
         }
 
@@ -1351,14 +1369,14 @@ public class ClerkBackend {
         /**
          * Returns the active biometric credentials enrolled by the user.
          */
-        public Users.ListUserBiometricCredentialsResponse listBiometricCredentials(Users.ListUserBiometricCredentialsRequest request) {
+        public BiometricCredentialList listBiometricCredentials(Users.ListUserBiometricCredentialsRequest request) {
             return Users.listUserBiometricCredentials(this.clientConfig, request);
         }
 
         /**
          * Returns the active biometric credentials enrolled by the user.
          */
-        public Users.ListUserBiometricCredentialsResponse listBiometricCredentials(Users.ListUserBiometricCredentialsRequest request, SdkConfig.RequestOptions options) {
+        public BiometricCredentialList listBiometricCredentials(Users.ListUserBiometricCredentialsRequest request, SdkConfig.RequestOptions options) {
             return Users.listUserBiometricCredentials(this.clientConfig, request, options);
         }
 
@@ -1527,14 +1545,14 @@ public class ClerkBackend {
         /**
          * Revokes the given invitation. Revoking an invitation will prevent the user from using the invitation link that was sent to them. However, it doesn't prevent the user from signing up if they follow the sign up flow. Only active (i.e. non-revoked) invitations can be revoked.
          */
-        public Invitations.RevokeInvitationResponse revoke(Invitations.RevokeInvitationRequest request) {
+        public InvitationRevoked revoke(Invitations.RevokeInvitationRequest request) {
             return Invitations.revokeInvitation(this.clientConfig, request);
         }
 
         /**
          * Revokes the given invitation. Revoking an invitation will prevent the user from using the invitation link that was sent to them. However, it doesn't prevent the user from signing up if they follow the sign up flow. Only active (i.e. non-revoked) invitations can be revoked.
          */
-        public Invitations.RevokeInvitationResponse revoke(Invitations.RevokeInvitationRequest request, SdkConfig.RequestOptions options) {
+        public InvitationRevoked revoke(Invitations.RevokeInvitationRequest request, SdkConfig.RequestOptions options) {
             return Invitations.revokeInvitation(this.clientConfig, request, options);
         }
 
@@ -1763,7 +1781,7 @@ public class ClerkBackend {
          *
          * Updates the settings of an instance
          */
-        public BetaFeatures.UpdateInstanceAuthConfigResponse updateInstanceAuthConfig(BetaFeatures.UpdateInstanceAuthConfigRequest request) {
+        public InstanceSettings updateInstanceAuthConfig(BetaFeatures.UpdateInstanceAuthConfigRequest request) {
             return BetaFeatures.updateInstanceAuthConfig(this.clientConfig, request);
         }
 
@@ -1772,7 +1790,7 @@ public class ClerkBackend {
          *
          * Updates the settings of an instance
          */
-        public BetaFeatures.UpdateInstanceAuthConfigResponse updateInstanceAuthConfig(BetaFeatures.UpdateInstanceAuthConfigRequest request, SdkConfig.RequestOptions options) {
+        public InstanceSettings updateInstanceAuthConfig(BetaFeatures.UpdateInstanceAuthConfigRequest request, SdkConfig.RequestOptions options) {
             return BetaFeatures.updateInstanceAuthConfig(this.clientConfig, request, options);
         }
 
@@ -1924,7 +1942,7 @@ public class ClerkBackend {
          * Fetches the current instance
          */
         public Instance getInstance() {
-            return InstanceSettings.getInstance(this.clientConfig);
+            return InstanceSettingsApi.getInstance(this.clientConfig);
         }
 
         /**
@@ -1933,7 +1951,7 @@ public class ClerkBackend {
          * Fetches the current instance
          */
         public Instance getInstance(SdkConfig.RequestOptions options) {
-            return InstanceSettings.getInstance(this.clientConfig, options);
+            return InstanceSettingsApi.getInstance(this.clientConfig, options);
         }
 
         /**
@@ -1941,8 +1959,8 @@ public class ClerkBackend {
          *
          * Updates the settings of an instance
          */
-        public Object updateInstance(InstanceSettings.UpdateInstanceRequest request) {
-            return InstanceSettings.updateInstance(this.clientConfig, request);
+        public Object updateInstance(InstanceSettingsApi.UpdateInstanceRequest request) {
+            return InstanceSettingsApi.updateInstance(this.clientConfig, request);
         }
 
         /**
@@ -1950,8 +1968,8 @@ public class ClerkBackend {
          *
          * Updates the settings of an instance
          */
-        public Object updateInstance(InstanceSettings.UpdateInstanceRequest request, SdkConfig.RequestOptions options) {
-            return InstanceSettings.updateInstance(this.clientConfig, request, options);
+        public Object updateInstance(InstanceSettingsApi.UpdateInstanceRequest request, SdkConfig.RequestOptions options) {
+            return InstanceSettingsApi.updateInstance(this.clientConfig, request, options);
         }
 
         /**
@@ -1959,8 +1977,8 @@ public class ClerkBackend {
          *
          * Updates the restriction settings of an instance
          */
-        public InstanceRestrictions updateInstanceRestrictions(InstanceSettings.UpdateInstanceRestrictionsRequest request) {
-            return InstanceSettings.updateInstanceRestrictions(this.clientConfig, request);
+        public InstanceRestrictions updateInstanceRestrictions(InstanceSettingsApi.UpdateInstanceRestrictionsRequest request) {
+            return InstanceSettingsApi.updateInstanceRestrictions(this.clientConfig, request);
         }
 
         /**
@@ -1968,106 +1986,106 @@ public class ClerkBackend {
          *
          * Updates the restriction settings of an instance
          */
-        public InstanceRestrictions updateInstanceRestrictions(InstanceSettings.UpdateInstanceRestrictionsRequest request, SdkConfig.RequestOptions options) {
-            return InstanceSettings.updateInstanceRestrictions(this.clientConfig, request, options);
+        public InstanceRestrictions updateInstanceRestrictions(InstanceSettingsApi.UpdateInstanceRestrictionsRequest request, SdkConfig.RequestOptions options) {
+            return InstanceSettingsApi.updateInstanceRestrictions(this.clientConfig, request, options);
         }
 
         /**
          * Retrieves the Protect settings for the instance, including rule enforcement and prerequisite check status. Use `rules_enabled` to distinguish active enforcement from shadow evaluation, where rules are scored and recorded without blocking traffic.
          */
         public InstanceProtect getInstanceProtect() {
-            return InstanceSettings.getInstanceProtect(this.clientConfig);
+            return InstanceSettingsApi.getInstanceProtect(this.clientConfig);
         }
 
         /**
          * Retrieves the Protect settings for the instance, including rule enforcement and prerequisite check status. Use `rules_enabled` to distinguish active enforcement from shadow evaluation, where rules are scored and recorded without blocking traffic.
          */
         public InstanceProtect getInstanceProtect(SdkConfig.RequestOptions options) {
-            return InstanceSettings.getInstanceProtect(this.clientConfig, options);
+            return InstanceSettingsApi.getInstanceProtect(this.clientConfig, options);
         }
 
         /**
          * Updates whether Protect rules are enforced for the instance. Set `rules_enabled` to true to enforce rules or false to return to shadow evaluation, which continues scoring and recording rules without blocking traffic.
          */
-        public InstanceProtect updateInstanceProtect(InstanceSettings.UpdateInstanceProtectRequest request) {
-            return InstanceSettings.updateInstanceProtect(this.clientConfig, request);
+        public InstanceProtect updateInstanceProtect(InstanceSettingsApi.UpdateInstanceProtectRequest request) {
+            return InstanceSettingsApi.updateInstanceProtect(this.clientConfig, request);
         }
 
         /**
          * Updates whether Protect rules are enforced for the instance. Set `rules_enabled` to true to enforce rules or false to return to shadow evaluation, which continues scoring and recording rules without blocking traffic.
          */
-        public InstanceProtect updateInstanceProtect(InstanceSettings.UpdateInstanceProtectRequest request, SdkConfig.RequestOptions options) {
-            return InstanceSettings.updateInstanceProtect(this.clientConfig, request, options);
+        public InstanceProtect updateInstanceProtect(InstanceSettingsApi.UpdateInstanceProtectRequest request, SdkConfig.RequestOptions options) {
+            return InstanceSettingsApi.updateInstanceProtect(this.clientConfig, request, options);
         }
 
         /**
          * Retrieves the per-instance SMS communication settings, including the SMS country blocklist.
          */
         public InstanceCommunication getInstanceCommunication() {
-            return InstanceSettings.getInstanceCommunication(this.clientConfig);
+            return InstanceSettingsApi.getInstanceCommunication(this.clientConfig);
         }
 
         /**
          * Retrieves the per-instance SMS communication settings, including the SMS country blocklist.
          */
         public InstanceCommunication getInstanceCommunication(SdkConfig.RequestOptions options) {
-            return InstanceSettings.getInstanceCommunication(this.clientConfig, options);
+            return InstanceSettingsApi.getInstanceCommunication(this.clientConfig, options);
         }
 
         /**
          * Replaces the SMS country blocklist for this instance. Pass the full set of ISO 3166-1 alpha-2 country codes that should be blocked; codes that aren't recognized as SMS-tier countries are silently dropped from the persisted list. Omitting `blocked_country_codes` is a no-op.
          */
-        public InstanceCommunication updateInstanceCommunication(InstanceSettings.UpdateInstanceCommunicationRequest request) {
-            return InstanceSettings.updateInstanceCommunication(this.clientConfig, request);
+        public InstanceCommunication updateInstanceCommunication(InstanceSettingsApi.UpdateInstanceCommunicationRequest request) {
+            return InstanceSettingsApi.updateInstanceCommunication(this.clientConfig, request);
         }
 
         /**
          * Replaces the SMS country blocklist for this instance. Pass the full set of ISO 3166-1 alpha-2 country codes that should be blocked; codes that aren't recognized as SMS-tier countries are silently dropped from the persisted list. Omitting `blocked_country_codes` is a no-op.
          */
-        public InstanceCommunication updateInstanceCommunication(InstanceSettings.UpdateInstanceCommunicationRequest request, SdkConfig.RequestOptions options) {
-            return InstanceSettings.updateInstanceCommunication(this.clientConfig, request, options);
+        public InstanceCommunication updateInstanceCommunication(InstanceSettingsApi.UpdateInstanceCommunicationRequest request, SdkConfig.RequestOptions options) {
+            return InstanceSettingsApi.updateInstanceCommunication(this.clientConfig, request, options);
         }
 
         /**
          * Retrieves the settings for OAuth applications for the instance (dynamic client registration, JWT access tokens, etc.).
          */
         public OAuthApplicationSettings getInstanceOAuthApplicationSettings() {
-            return InstanceSettings.getInstanceOAuthApplicationSettings(this.clientConfig);
+            return InstanceSettingsApi.getInstanceOAuthApplicationSettings(this.clientConfig);
         }
 
         /**
          * Retrieves the settings for OAuth applications for the instance (dynamic client registration, JWT access tokens, etc.).
          */
         public OAuthApplicationSettings getInstanceOAuthApplicationSettings(SdkConfig.RequestOptions options) {
-            return InstanceSettings.getInstanceOAuthApplicationSettings(this.clientConfig, options);
+            return InstanceSettingsApi.getInstanceOAuthApplicationSettings(this.clientConfig, options);
         }
 
         /**
          * Updates the OAuth application settings for the instance.
          */
-        public OAuthApplicationSettings updateInstanceOAuthApplicationSettings(InstanceSettings.UpdateInstanceOAuthApplicationSettingsRequest request) {
-            return InstanceSettings.updateInstanceOAuthApplicationSettings(this.clientConfig, request);
+        public OAuthApplicationSettings updateInstanceOAuthApplicationSettings(InstanceSettingsApi.UpdateInstanceOAuthApplicationSettingsRequest request) {
+            return InstanceSettingsApi.updateInstanceOAuthApplicationSettings(this.clientConfig, request);
         }
 
         /**
          * Updates the OAuth application settings for the instance.
          */
-        public OAuthApplicationSettings updateInstanceOAuthApplicationSettings(InstanceSettings.UpdateInstanceOAuthApplicationSettingsRequest request, SdkConfig.RequestOptions options) {
-            return InstanceSettings.updateInstanceOAuthApplicationSettings(this.clientConfig, request, options);
+        public OAuthApplicationSettings updateInstanceOAuthApplicationSettings(InstanceSettingsApi.UpdateInstanceOAuthApplicationSettingsRequest request, SdkConfig.RequestOptions options) {
+            return InstanceSettingsApi.updateInstanceOAuthApplicationSettings(this.clientConfig, request, options);
         }
 
         /**
          * Retrieves the organization settings of the instance
          */
         public OrganizationSettings getInstanceOrganizationSettings() {
-            return InstanceSettings.getInstanceOrganizationSettings(this.clientConfig);
+            return InstanceSettingsApi.getInstanceOrganizationSettings(this.clientConfig);
         }
 
         /**
          * Retrieves the organization settings of the instance
          */
         public OrganizationSettings getInstanceOrganizationSettings(SdkConfig.RequestOptions options) {
-            return InstanceSettings.getInstanceOrganizationSettings(this.clientConfig, options);
+            return InstanceSettingsApi.getInstanceOrganizationSettings(this.clientConfig, options);
         }
 
         /**
@@ -2075,8 +2093,8 @@ public class ClerkBackend {
          *
          * Updates the organization settings of the instance
          */
-        public OrganizationSettings updateInstanceOrganizationSettings(InstanceSettings.UpdateInstanceOrganizationSettingsRequest request) {
-            return InstanceSettings.updateInstanceOrganizationSettings(this.clientConfig, request);
+        public OrganizationSettings updateInstanceOrganizationSettings(InstanceSettingsApi.UpdateInstanceOrganizationSettingsRequest request) {
+            return InstanceSettingsApi.updateInstanceOrganizationSettings(this.clientConfig, request);
         }
 
         /**
@@ -2084,8 +2102,8 @@ public class ClerkBackend {
          *
          * Updates the organization settings of the instance
          */
-        public OrganizationSettings updateInstanceOrganizationSettings(InstanceSettings.UpdateInstanceOrganizationSettingsRequest request, SdkConfig.RequestOptions options) {
-            return InstanceSettings.updateInstanceOrganizationSettings(this.clientConfig, request, options);
+        public OrganizationSettings updateInstanceOrganizationSettings(InstanceSettingsApi.UpdateInstanceOrganizationSettingsRequest request, SdkConfig.RequestOptions options) {
+            return InstanceSettingsApi.updateInstanceOrganizationSettings(this.clientConfig, request, options);
         }
 
     }
@@ -2233,14 +2251,14 @@ public class ClerkBackend {
         /**
          * This request returns the list of machines for an instance. The machines are ordered by descending creation date (i.e. most recent machines will be returned first)
          */
-        public Machines.ListMachinesResponse list(Machines.ListMachinesRequest request) {
+        public MachineList list(Machines.ListMachinesRequest request) {
             return Machines.listMachines(this.clientConfig, request);
         }
 
         /**
          * This request returns the list of machines for an instance. The machines are ordered by descending creation date (i.e. most recent machines will be returned first)
          */
-        public Machines.ListMachinesResponse list(Machines.ListMachinesRequest request, SdkConfig.RequestOptions options) {
+        public MachineList list(Machines.ListMachinesRequest request, SdkConfig.RequestOptions options) {
             return Machines.listMachines(this.clientConfig, request, options);
         }
 
@@ -2249,7 +2267,7 @@ public class ClerkBackend {
          *
          * Creates a new machine.
          */
-        public Machines.CreateMachineResponse create(Machines.CreateMachineRequest request) {
+        public MachineCreated create(Machines.CreateMachineRequest request) {
             return Machines.createMachine(this.clientConfig, request);
         }
 
@@ -2258,7 +2276,7 @@ public class ClerkBackend {
          *
          * Creates a new machine.
          */
-        public Machines.CreateMachineResponse create(Machines.CreateMachineRequest request, SdkConfig.RequestOptions options) {
+        public MachineCreated create(Machines.CreateMachineRequest request, SdkConfig.RequestOptions options) {
             return Machines.createMachine(this.clientConfig, request, options);
         }
 
@@ -2299,7 +2317,7 @@ public class ClerkBackend {
          *
          * Deletes a machine.
          */
-        public Machines.DeleteMachineResponse delete(Machines.DeleteMachineRequest request) {
+        public MachineDeleted delete(Machines.DeleteMachineRequest request) {
             return Machines.deleteMachine(this.clientConfig, request);
         }
 
@@ -2308,7 +2326,7 @@ public class ClerkBackend {
          *
          * Deletes a machine.
          */
-        public Machines.DeleteMachineResponse delete(Machines.DeleteMachineRequest request, SdkConfig.RequestOptions options) {
+        public MachineDeleted delete(Machines.DeleteMachineRequest request, SdkConfig.RequestOptions options) {
             return Machines.deleteMachine(this.clientConfig, request, options);
         }
 
@@ -2317,7 +2335,7 @@ public class ClerkBackend {
          *
          * Returns the secret key for a machine.
          */
-        public Machines.GetMachineSecretKeyResponse getSecretKey(Machines.GetMachineSecretKeyRequest request) {
+        public MachineSecretKey getSecretKey(Machines.GetMachineSecretKeyRequest request) {
             return Machines.getMachineSecretKey(this.clientConfig, request);
         }
 
@@ -2326,21 +2344,21 @@ public class ClerkBackend {
          *
          * Returns the secret key for a machine.
          */
-        public Machines.GetMachineSecretKeyResponse getSecretKey(Machines.GetMachineSecretKeyRequest request, SdkConfig.RequestOptions options) {
+        public MachineSecretKey getSecretKey(Machines.GetMachineSecretKeyRequest request, SdkConfig.RequestOptions options) {
             return Machines.getMachineSecretKey(this.clientConfig, request, options);
         }
 
         /**
          * Rotates the machine's secret key. When the secret key is rotated, make sure to update it in your machine/application. The previous secret key will remain valid for the duration specified by the previous_token_ttl parameter.
          */
-        public Machines.RotateMachineSecretKeyResponse rotateSecretKey(Machines.RotateMachineSecretKeyRequest request) {
+        public MachineSecretKey rotateSecretKey(Machines.RotateMachineSecretKeyRequest request) {
             return Machines.rotateMachineSecretKey(this.clientConfig, request);
         }
 
         /**
          * Rotates the machine's secret key. When the secret key is rotated, make sure to update it in your machine/application. The previous secret key will remain valid for the duration specified by the previous_token_ttl parameter.
          */
-        public Machines.RotateMachineSecretKeyResponse rotateSecretKey(Machines.RotateMachineSecretKeyRequest request, SdkConfig.RequestOptions options) {
+        public MachineSecretKey rotateSecretKey(Machines.RotateMachineSecretKeyRequest request, SdkConfig.RequestOptions options) {
             return Machines.rotateMachineSecretKey(this.clientConfig, request, options);
         }
 
@@ -2361,14 +2379,14 @@ public class ClerkBackend {
         /**
          * Deletes a machine scope, removing access from one machine to another.
          */
-        public Machines.DeleteMachineScopeResponse deleteScope(Machines.DeleteMachineScopeRequest request) {
+        public MachineScopeDeleted deleteScope(Machines.DeleteMachineScopeRequest request) {
             return Machines.deleteMachineScope(this.clientConfig, request);
         }
 
         /**
          * Deletes a machine scope, removing access from one machine to another.
          */
-        public Machines.DeleteMachineScopeResponse deleteScope(Machines.DeleteMachineScopeRequest request, SdkConfig.RequestOptions options) {
+        public MachineScopeDeleted deleteScope(Machines.DeleteMachineScopeRequest request, SdkConfig.RequestOptions options) {
             return Machines.deleteMachineScope(this.clientConfig, request, options);
         }
 
@@ -3485,29 +3503,29 @@ public class ClerkBackend {
         /**
          * Retrieve a list of waitlist entries for the instance. Entries are ordered by creation date in descending order by default. Supports filtering by email address or status and pagination with limit and offset parameters.
          */
-        public WaitlistEntries.ListWaitlistEntriesResponse list(WaitlistEntries.ListWaitlistEntriesRequest request) {
-            return WaitlistEntries.listWaitlistEntries(this.clientConfig, request);
+        public WaitlistEntries list(WaitlistEntriesApi.ListWaitlistEntriesRequest request) {
+            return WaitlistEntriesApi.listWaitlistEntries(this.clientConfig, request);
         }
 
         /**
          * Retrieve a list of waitlist entries for the instance. Entries are ordered by creation date in descending order by default. Supports filtering by email address or status and pagination with limit and offset parameters.
          */
-        public WaitlistEntries.ListWaitlistEntriesResponse list(WaitlistEntries.ListWaitlistEntriesRequest request, SdkConfig.RequestOptions options) {
-            return WaitlistEntries.listWaitlistEntries(this.clientConfig, request, options);
+        public WaitlistEntries list(WaitlistEntriesApi.ListWaitlistEntriesRequest request, SdkConfig.RequestOptions options) {
+            return WaitlistEntriesApi.listWaitlistEntries(this.clientConfig, request, options);
         }
 
         /**
          * Creates a new waitlist entry for the given email address. If the email address is already on the waitlist, no new entry will be created and the existing waitlist entry will be returned.
          */
-        public WaitlistEntry create(WaitlistEntries.CreateWaitlistEntryRequest request) {
-            return WaitlistEntries.createWaitlistEntry(this.clientConfig, request);
+        public WaitlistEntry create(WaitlistEntriesApi.CreateWaitlistEntryRequest request) {
+            return WaitlistEntriesApi.createWaitlistEntry(this.clientConfig, request);
         }
 
         /**
          * Creates a new waitlist entry for the given email address. If the email address is already on the waitlist, no new entry will be created and the existing waitlist entry will be returned.
          */
-        public WaitlistEntry create(WaitlistEntries.CreateWaitlistEntryRequest request, SdkConfig.RequestOptions options) {
-            return WaitlistEntries.createWaitlistEntry(this.clientConfig, request, options);
+        public WaitlistEntry create(WaitlistEntriesApi.CreateWaitlistEntryRequest request, SdkConfig.RequestOptions options) {
+            return WaitlistEntriesApi.createWaitlistEntry(this.clientConfig, request, options);
         }
 
         /**
@@ -3515,8 +3533,8 @@ public class ClerkBackend {
          *
          * Creates multiple waitlist entries for the provided email addresses. You can choose whether to send confirmation emails by setting the `notify` parameter to `true` or `false` for each entry. If the `notify` parameter is omitted, it defaults to `true`. If an email address is already on the waitlist, no new entry will be created and the existing waitlist entry will be returned. Duplicate email addresses within the same request are not allowed. This endpoint is limited to a maximum of 50 entries per API call. If you need to add more entries, please make multiple requests.
          */
-        public List<WaitlistEntry> createBulk(WaitlistEntries.CreateBulkWaitlistEntriesRequest request) {
-            return WaitlistEntries.createBulkWaitlistEntries(this.clientConfig, request);
+        public List<WaitlistEntry> createBulk(WaitlistEntriesApi.CreateBulkWaitlistEntriesRequest request) {
+            return WaitlistEntriesApi.createBulkWaitlistEntries(this.clientConfig, request);
         }
 
         /**
@@ -3524,8 +3542,8 @@ public class ClerkBackend {
          *
          * Creates multiple waitlist entries for the provided email addresses. You can choose whether to send confirmation emails by setting the `notify` parameter to `true` or `false` for each entry. If the `notify` parameter is omitted, it defaults to `true`. If an email address is already on the waitlist, no new entry will be created and the existing waitlist entry will be returned. Duplicate email addresses within the same request are not allowed. This endpoint is limited to a maximum of 50 entries per API call. If you need to add more entries, please make multiple requests.
          */
-        public List<WaitlistEntry> createBulk(WaitlistEntries.CreateBulkWaitlistEntriesRequest request, SdkConfig.RequestOptions options) {
-            return WaitlistEntries.createBulkWaitlistEntries(this.clientConfig, request, options);
+        public List<WaitlistEntry> createBulk(WaitlistEntriesApi.CreateBulkWaitlistEntriesRequest request, SdkConfig.RequestOptions options) {
+            return WaitlistEntriesApi.createBulkWaitlistEntries(this.clientConfig, request, options);
         }
 
         /**
@@ -3533,8 +3551,8 @@ public class ClerkBackend {
          *
          * Delete a pending waitlist entry.
          */
-        public DeletedObject delete(WaitlistEntries.DeleteWaitlistEntryRequest request) {
-            return WaitlistEntries.deleteWaitlistEntry(this.clientConfig, request);
+        public DeletedObject delete(WaitlistEntriesApi.DeleteWaitlistEntryRequest request) {
+            return WaitlistEntriesApi.deleteWaitlistEntry(this.clientConfig, request);
         }
 
         /**
@@ -3542,22 +3560,22 @@ public class ClerkBackend {
          *
          * Delete a pending waitlist entry.
          */
-        public DeletedObject delete(WaitlistEntries.DeleteWaitlistEntryRequest request, SdkConfig.RequestOptions options) {
-            return WaitlistEntries.deleteWaitlistEntry(this.clientConfig, request, options);
+        public DeletedObject delete(WaitlistEntriesApi.DeleteWaitlistEntryRequest request, SdkConfig.RequestOptions options) {
+            return WaitlistEntriesApi.deleteWaitlistEntry(this.clientConfig, request, options);
         }
 
         /**
          * Send an invite to the email address in a waitlist entry.
          */
-        public WaitlistEntry invite(WaitlistEntries.InviteWaitlistEntryRequest request) {
-            return WaitlistEntries.inviteWaitlistEntry(this.clientConfig, request);
+        public WaitlistEntry invite(WaitlistEntriesApi.InviteWaitlistEntryRequest request) {
+            return WaitlistEntriesApi.inviteWaitlistEntry(this.clientConfig, request);
         }
 
         /**
          * Send an invite to the email address in a waitlist entry.
          */
-        public WaitlistEntry invite(WaitlistEntries.InviteWaitlistEntryRequest request, SdkConfig.RequestOptions options) {
-            return WaitlistEntries.inviteWaitlistEntry(this.clientConfig, request, options);
+        public WaitlistEntry invite(WaitlistEntriesApi.InviteWaitlistEntryRequest request, SdkConfig.RequestOptions options) {
+            return WaitlistEntriesApi.inviteWaitlistEntry(this.clientConfig, request, options);
         }
 
         /**
@@ -3565,8 +3583,8 @@ public class ClerkBackend {
          *
          * Reject a waitlist entry.
          */
-        public WaitlistEntry reject(WaitlistEntries.RejectWaitlistEntryRequest request) {
-            return WaitlistEntries.rejectWaitlistEntry(this.clientConfig, request);
+        public WaitlistEntry reject(WaitlistEntriesApi.RejectWaitlistEntryRequest request) {
+            return WaitlistEntriesApi.rejectWaitlistEntry(this.clientConfig, request);
         }
 
         /**
@@ -3574,8 +3592,8 @@ public class ClerkBackend {
          *
          * Reject a waitlist entry.
          */
-        public WaitlistEntry reject(WaitlistEntries.RejectWaitlistEntryRequest request, SdkConfig.RequestOptions options) {
-            return WaitlistEntries.rejectWaitlistEntry(this.clientConfig, request, options);
+        public WaitlistEntry reject(WaitlistEntriesApi.RejectWaitlistEntryRequest request, SdkConfig.RequestOptions options) {
+            return WaitlistEntriesApi.rejectWaitlistEntry(this.clientConfig, request, options);
         }
 
     }
@@ -3949,14 +3967,14 @@ public class ClerkBackend {
         /**
          * Returns a list of all directories for the instance.
          */
-        public ScimDirectories.ListSCIMDirectoriesResponse list(ScimDirectories.ListScimDirectoriesRequest request) {
+        public SCIMDirectoryList list(ScimDirectories.ListScimDirectoriesRequest request) {
             return ScimDirectories.listScimDirectories(this.clientConfig, request);
         }
 
         /**
          * Returns a list of all directories for the instance.
          */
-        public ScimDirectories.ListSCIMDirectoriesResponse list(ScimDirectories.ListScimDirectoriesRequest request, SdkConfig.RequestOptions options) {
+        public SCIMDirectoryList list(ScimDirectories.ListScimDirectoriesRequest request, SdkConfig.RequestOptions options) {
             return ScimDirectories.listScimDirectories(this.clientConfig, request, options);
         }
 
@@ -4045,14 +4063,14 @@ public class ClerkBackend {
         /**
          * Returns the list of SCIM group to organization role mappings for a directory, ordered by precedence.
          */
-        public ScimDirectories.ListSCIMGroupRoleMappingsResponse listScimGroupRoleMappings(ScimDirectories.ListScimGroupRoleMappingsRequest request) {
+        public SCIMGroupRoleMappingList listScimGroupRoleMappings(ScimDirectories.ListScimGroupRoleMappingsRequest request) {
             return ScimDirectories.listScimGroupRoleMappings(this.clientConfig, request);
         }
 
         /**
          * Returns the list of SCIM group to organization role mappings for a directory, ordered by precedence.
          */
-        public ScimDirectories.ListSCIMGroupRoleMappingsResponse listScimGroupRoleMappings(ScimDirectories.ListScimGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
+        public SCIMGroupRoleMappingList listScimGroupRoleMappings(ScimDirectories.ListScimGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
             return ScimDirectories.listScimGroupRoleMappings(this.clientConfig, request, options);
         }
 
@@ -4073,28 +4091,28 @@ public class ClerkBackend {
         /**
          * Replaces the entire set of SCIM group role mappings for a directory. The position of each item in the `mappings` array determines its precedence (the first item gets precedence 1). Passing an empty array removes all mappings. Mappings can be replaced while group role mapping is disabled on the directory, but they only take effect once it is enabled.
          */
-        public ScimDirectories.ReplaceSCIMGroupRoleMappingsResponse replaceScimGroupRoleMappings(ScimDirectories.ReplaceScimGroupRoleMappingsRequest request) {
+        public SCIMGroupRoleMappingList replaceScimGroupRoleMappings(ScimDirectories.ReplaceScimGroupRoleMappingsRequest request) {
             return ScimDirectories.replaceScimGroupRoleMappings(this.clientConfig, request);
         }
 
         /**
          * Replaces the entire set of SCIM group role mappings for a directory. The position of each item in the `mappings` array determines its precedence (the first item gets precedence 1). Passing an empty array removes all mappings. Mappings can be replaced while group role mapping is disabled on the directory, but they only take effect once it is enabled.
          */
-        public ScimDirectories.ReplaceSCIMGroupRoleMappingsResponse replaceScimGroupRoleMappings(ScimDirectories.ReplaceScimGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
+        public SCIMGroupRoleMappingList replaceScimGroupRoleMappings(ScimDirectories.ReplaceScimGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
             return ScimDirectories.replaceScimGroupRoleMappings(this.clientConfig, request, options);
         }
 
         /**
          * Deletes a single SCIM group role mapping. Mappings can be deleted while group role mapping is disabled on the directory, but the change only takes effect once it is enabled.
          */
-        public ScimDirectories.DeleteSCIMGroupRoleMappingResponse deleteScimGroupRoleMapping(ScimDirectories.DeleteScimGroupRoleMappingRequest request) {
+        public SCIMGroupRoleMappingDeleted deleteScimGroupRoleMapping(ScimDirectories.DeleteScimGroupRoleMappingRequest request) {
             return ScimDirectories.deleteScimGroupRoleMapping(this.clientConfig, request);
         }
 
         /**
          * Deletes a single SCIM group role mapping. Mappings can be deleted while group role mapping is disabled on the directory, but the change only takes effect once it is enabled.
          */
-        public ScimDirectories.DeleteSCIMGroupRoleMappingResponse deleteScimGroupRoleMapping(ScimDirectories.DeleteScimGroupRoleMappingRequest request, SdkConfig.RequestOptions options) {
+        public SCIMGroupRoleMappingDeleted deleteScimGroupRoleMapping(ScimDirectories.DeleteScimGroupRoleMappingRequest request, SdkConfig.RequestOptions options) {
             return ScimDirectories.deleteScimGroupRoleMapping(this.clientConfig, request, options);
         }
 
@@ -4107,14 +4125,14 @@ public class ClerkBackend {
         /**
          * Returns a list of all directories for the instance.
          */
-        public DirectoriesApi.ListDirectoriesResponse list(DirectoriesApi.ListDirectoriesRequest request) {
+        public DirectoryList list(DirectoriesApi.ListDirectoriesRequest request) {
             return DirectoriesApi.listDirectories(this.clientConfig, request);
         }
 
         /**
          * Returns a list of all directories for the instance.
          */
-        public DirectoriesApi.ListDirectoriesResponse list(DirectoriesApi.ListDirectoriesRequest request, SdkConfig.RequestOptions options) {
+        public DirectoryList list(DirectoriesApi.ListDirectoriesRequest request, SdkConfig.RequestOptions options) {
             return DirectoriesApi.listDirectories(this.clientConfig, request, options);
         }
 
@@ -4203,14 +4221,14 @@ public class ClerkBackend {
         /**
          * Returns the list of directory group to organization role mappings for a directory, ordered by precedence.
          */
-        public DirectoriesApi.ListDirectoryGroupRoleMappingsResponse listGroupRoleMappings(DirectoriesApi.ListDirectoryGroupRoleMappingsRequest request) {
+        public DirectoryGroupRoleMappingList listGroupRoleMappings(DirectoriesApi.ListDirectoryGroupRoleMappingsRequest request) {
             return DirectoriesApi.listDirectoryGroupRoleMappings(this.clientConfig, request);
         }
 
         /**
          * Returns the list of directory group to organization role mappings for a directory, ordered by precedence.
          */
-        public DirectoriesApi.ListDirectoryGroupRoleMappingsResponse listGroupRoleMappings(DirectoriesApi.ListDirectoryGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
+        public DirectoryGroupRoleMappingList listGroupRoleMappings(DirectoriesApi.ListDirectoryGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
             return DirectoriesApi.listDirectoryGroupRoleMappings(this.clientConfig, request, options);
         }
 
@@ -4231,28 +4249,28 @@ public class ClerkBackend {
         /**
          * Replaces the entire set of directory group role mappings for a directory. The position of each item in the `mappings` array determines its precedence (the first item gets precedence 1). Passing an empty array removes all mappings. Mappings can be replaced while group role mapping is disabled on the directory, but they only take effect once it is enabled.
          */
-        public DirectoriesApi.ReplaceDirectoryGroupRoleMappingsResponse replaceGroupRoleMappings(DirectoriesApi.ReplaceDirectoryGroupRoleMappingsRequest request) {
+        public DirectoryGroupRoleMappingList replaceGroupRoleMappings(DirectoriesApi.ReplaceDirectoryGroupRoleMappingsRequest request) {
             return DirectoriesApi.replaceDirectoryGroupRoleMappings(this.clientConfig, request);
         }
 
         /**
          * Replaces the entire set of directory group role mappings for a directory. The position of each item in the `mappings` array determines its precedence (the first item gets precedence 1). Passing an empty array removes all mappings. Mappings can be replaced while group role mapping is disabled on the directory, but they only take effect once it is enabled.
          */
-        public DirectoriesApi.ReplaceDirectoryGroupRoleMappingsResponse replaceGroupRoleMappings(DirectoriesApi.ReplaceDirectoryGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
+        public DirectoryGroupRoleMappingList replaceGroupRoleMappings(DirectoriesApi.ReplaceDirectoryGroupRoleMappingsRequest request, SdkConfig.RequestOptions options) {
             return DirectoriesApi.replaceDirectoryGroupRoleMappings(this.clientConfig, request, options);
         }
 
         /**
          * Deletes a single directory group role mapping. Mappings can be deleted while group role mapping is disabled on the directory, but the change only takes effect once it is enabled.
          */
-        public DirectoriesApi.DeleteDirectoryGroupRoleMappingResponse deleteGroupRoleMapping(DirectoriesApi.DeleteDirectoryGroupRoleMappingRequest request) {
+        public DirectoryGroupRoleMappingDeleted deleteGroupRoleMapping(DirectoriesApi.DeleteDirectoryGroupRoleMappingRequest request) {
             return DirectoriesApi.deleteDirectoryGroupRoleMapping(this.clientConfig, request);
         }
 
         /**
          * Deletes a single directory group role mapping. Mappings can be deleted while group role mapping is disabled on the directory, but the change only takes effect once it is enabled.
          */
-        public DirectoriesApi.DeleteDirectoryGroupRoleMappingResponse deleteGroupRoleMapping(DirectoriesApi.DeleteDirectoryGroupRoleMappingRequest request, SdkConfig.RequestOptions options) {
+        public DirectoryGroupRoleMappingDeleted deleteGroupRoleMapping(DirectoriesApi.DeleteDirectoryGroupRoleMappingRequest request, SdkConfig.RequestOptions options) {
             return DirectoriesApi.deleteDirectoryGroupRoleMapping(this.clientConfig, request, options);
         }
 
@@ -4495,14 +4513,14 @@ public class ClerkBackend {
         /**
          * Verifies an OAuth access token and returns its token details or active status. Supply the token in `access_token`; the legacy `secret` field is deprecated. Use this endpoint to check whether an access token is active and retrieve its associated client, subject, and scopes when available.
          */
-        public Object verify(OAuthAccessTokens.VerifyOAuthAccessTokenRequest request) {
+        public VerifyOAuthAccessTokenResponse verify(OAuthAccessTokens.VerifyOAuthAccessTokenRequest request) {
             return OAuthAccessTokens.verifyOAuthAccessToken(this.clientConfig, request);
         }
 
         /**
          * Verifies an OAuth access token and returns its token details or active status. Supply the token in `access_token`; the legacy `secret` field is deprecated. Use this endpoint to check whether an access token is active and retrieve its associated client, subject, and scopes when available.
          */
-        public Object verify(OAuthAccessTokens.VerifyOAuthAccessTokenRequest request, SdkConfig.RequestOptions options) {
+        public VerifyOAuthAccessTokenResponse verify(OAuthAccessTokens.VerifyOAuthAccessTokenRequest request, SdkConfig.RequestOptions options) {
             return OAuthAccessTokens.verifyOAuthAccessToken(this.clientConfig, request, options);
         }
 

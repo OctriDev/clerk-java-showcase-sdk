@@ -36,7 +36,7 @@ public final class CommerceTotalsResponse2 {
      */
     @Nullable @JsonProperty("per_unit_totals") public List<CommercePerUnitTotal2> perUnitTotals;
     /**
-     * Optional API value serialized in the `credits` wire field.
+     * Optional object value serialized in the `credits` wire field.
      */
     @Nullable public CommerceCreditsResponse credits;
     /**

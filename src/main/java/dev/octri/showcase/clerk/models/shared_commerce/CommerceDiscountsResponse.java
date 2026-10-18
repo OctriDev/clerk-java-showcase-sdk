@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 
 public final class CommerceDiscountsResponse {
     /**
-     * Required API value serialized in the `proration` wire field.
+     * Required object value serialized in the `proration` wire field.
      */
     @Nullable @JsonProperty(value = "proration", required = true) public CommerceProrationDiscountResponse proration;
     /**

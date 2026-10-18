@@ -3,61 +3,13 @@
 
 package dev.octri.showcase.clerk.methods;
 
+import dev.octri.showcase.clerk.models.beta_features.InstanceSettings;
 import dev.octri.showcase.clerk.models.shared_clerk.ClerkErrors;
 import dev.octri.showcase.clerk.SdkConfig;
 import dev.octri.showcase.clerk.SdkClient;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
-import javax.annotation.Nullable;
 
 public class BetaFeatures {
-
-    /**
-     * String representing the object's type. Objects of the same type share the same value.
-     */
-    public static final class UpdateInstanceAuthConfigResponseObjectEnum {
-        public static final UpdateInstanceAuthConfigResponseObjectEnum INSTANCE_SETTINGS = new UpdateInstanceAuthConfigResponseObjectEnum("instance_settings");
-        private final String value;
-        private UpdateInstanceAuthConfigResponseObjectEnum(String value) { this.value = java.util.Objects.requireNonNull(value, "value"); }
-        @com.fasterxml.jackson.annotation.JsonCreator(mode = com.fasterxml.jackson.annotation.JsonCreator.Mode.DELEGATING)
-        public static UpdateInstanceAuthConfigResponseObjectEnum fromValue(String value) {
-            if ("instance_settings".equals(value)) return INSTANCE_SETTINGS;
-            return new UpdateInstanceAuthConfigResponseObjectEnum(value);
-        }
-        @com.fasterxml.jackson.annotation.JsonValue public String getValue() { return value; }
-        @java.lang.Override public String toString() { return value; }
-        @java.lang.Override public boolean equals(Object other) {
-            return this == other || (other instanceof UpdateInstanceAuthConfigResponseObjectEnum o && value.equals(o.value));
-        }
-        @java.lang.Override public int hashCode() { return value.hashCode(); }
-    }
-
-
-    public static class UpdateInstanceAuthConfigResponse {
-        /**
-         * String representing the object's type. Objects of the same type share the same value.
-         */
-        @Nullable public UpdateInstanceAuthConfigResponseObjectEnum object;
-        @Nullable public String id;
-        @Nullable @JsonProperty("restricted_to_allowlist") public Boolean restrictedToAllowlist;
-        @Nullable @JsonProperty("from_email_address") public String fromEmailAddress;
-        @Nullable @JsonProperty("progressive_sign_up") public Boolean progressiveSignUp;
-        /**
-         * Deprecated. This setting is retired and no longer affects email delivery; all email is sent through the instance's configured email sending domain. The field is preserved for API compatibility only and will be removed in a future version.
-         */
-        @Nullable @JsonProperty("enhanced_email_deliverability") public Boolean enhancedEmailDeliverability;
-        @java.lang.Override
-        public String toString() {
-            return "UpdateInstanceAuthConfigResponse{"
-                + "object=" + object
-                + ", id=" + id
-                + ", restrictedToAllowlist=" + restrictedToAllowlist
-                + ", fromEmailAddress=" + fromEmailAddress
-                + ", progressiveSignUp=" + progressiveSignUp
-                + ", enhancedEmailDeliverability=" + enhancedEmailDeliverability
-                + "}";
-        }
-    }
 
     public static class UpdateInstanceAuthConfigRequest {
 
@@ -89,7 +41,7 @@ public class BetaFeatures {
      *
      * Updates the settings of an instance
      */
-    public static UpdateInstanceAuthConfigResponse updateInstanceAuthConfig(SdkConfig.ClientConfig clientConfig, UpdateInstanceAuthConfigRequest request) {
+    public static InstanceSettings updateInstanceAuthConfig(SdkConfig.ClientConfig clientConfig, UpdateInstanceAuthConfigRequest request) {
         return updateInstanceAuthConfig(clientConfig, request, null);
     }
 
@@ -98,13 +50,13 @@ public class BetaFeatures {
      *
      * Updates the settings of an instance
      */
-    public static UpdateInstanceAuthConfigResponse updateInstanceAuthConfig(SdkConfig.ClientConfig clientConfig, UpdateInstanceAuthConfigRequest request, SdkConfig.RequestOptions options) {
+    public static InstanceSettings updateInstanceAuthConfig(SdkConfig.ClientConfig clientConfig, UpdateInstanceAuthConfigRequest request, SdkConfig.RequestOptions options) {
         SdkClient.OptionalValue<Boolean> restrictedToAllowlist = request.getRestrictedToAllowlist();
         SdkClient.OptionalValue<String> fromEmailAddress = request.getFromEmailAddress();
         SdkClient.OptionalValue<Boolean> progressiveSignUp = request.getProgressiveSignUp();
         SdkClient.OptionalValue<Boolean> testMode = request.getTestMode();
 
-        return SdkClient.request(clientConfig, "PATCH", "/beta_features/instance_settings", null, SdkClient.q("restricted_to_allowlist", restrictedToAllowlist, "from_email_address", fromEmailAddress, "progressive_sign_up", progressiveSignUp, "test_mode", testMode), null, new TypeReference<UpdateInstanceAuthConfigResponse>(){}, "updateInstanceAuthConfig", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("402", ClerkErrors.class, "422", ClerkErrors.class)).data;
+        return SdkClient.request(clientConfig, "PATCH", "/beta_features/instance_settings", null, SdkClient.q("restricted_to_allowlist", restrictedToAllowlist, "from_email_address", fromEmailAddress, "progressive_sign_up", progressiveSignUp, "test_mode", testMode), null, new TypeReference<InstanceSettings>(){}, "updateInstanceAuthConfig", null, SdkClient.ResponseDecoder.JSON, options, java.util.Map.of("402", ClerkErrors.class, "422", ClerkErrors.class)).data;
     }
 
 

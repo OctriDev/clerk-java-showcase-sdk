@@ -97,7 +97,7 @@ When the API declares a model for an error response, the SDK decodes the body in
 ## Project layout and API discovery
 
 - Operation implementations are grouped under `src/main/java/dev/octri/showcase/clerk/methods/`.
-- 180 component models are split by API domain under `src/main/java/dev/octri/showcase/clerk/models/<domain>/<Type>.java` or `models/<tag path>/<Type>.java`.
+- 198 component models are split by API domain under `src/main/java/dev/octri/showcase/clerk/models/<domain>/<Type>.java` or `models/<tag path>/<Type>.java`.
 - Component schemas can choose a nested model folder with `x-octri-sdk-tags: ["Billing/Invoices"]`; the first tag owns the model and `/` creates nesting.
 - [`sdk-manifest.json`](sdk-manifest.json) is the language-neutral public API index: operations, request/response modes, model properties, enum values, and generation settings.
 - Models are public from their domain packages; import them as `dev.octri.showcase.clerk.models.<domain>.<Type>`.
