@@ -353,7 +353,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBillingOperations",
       "arguments": {
         "userId": "user-1",
         "amount": 100,
@@ -406,7 +406,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBillingOperations",
       "arguments": {
         "userId": "user-1",
         "amount": 100,
@@ -797,7 +797,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBanOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -1173,7 +1173,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBanOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -1209,7 +1209,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBanOperations",
       "arguments": {
         "userIds": [
           "user_ids"
@@ -1589,7 +1589,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBanOperations",
       "arguments": {
         "userIds": [
           "user_ids"
@@ -6819,7 +6819,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOperations",
       "arguments": {
         "externalId": "external-1",
         "firstName": "Example Name",
@@ -7300,7 +7300,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOperations",
       "arguments": {
         "externalId": "external-1",
         "firstName": "Example Name",
@@ -7621,7 +7621,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBackupCodeOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -7647,7 +7647,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBackupCodeOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -8083,7 +8083,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart2",
+      "owner": "dev.octri.showcase.clerk.methods.UsersExternalAccountsOperations",
       "arguments": {
         "userId": "user-1",
         "externalAccountId": "external_account-1"
@@ -8116,7 +8116,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart2",
+      "owner": "dev.octri.showcase.clerk.methods.UsersExternalAccountsOperations",
       "arguments": {
         "userId": "user-1",
         "externalAccountId": "external_account-1"
@@ -9399,7 +9399,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart2",
+      "owner": "dev.octri.showcase.clerk.methods.UsersTotpOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -9425,7 +9425,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart2",
+      "owner": "dev.octri.showcase.clerk.methods.UsersTotpOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -9461,7 +9461,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -9491,7 +9491,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -9520,6 +9520,78 @@
       }
     },
     {
+      "id": "deleteUserPasskey:deleteUserPasskey",
+      "operationId": "deleteUserPasskey",
+      "methodName": "deleteUserPasskey",
+      "namespace": [
+        "users"
+      ],
+      "mode": "normal",
+      "owner": "dev.octri.showcase.clerk.methods.UsersPasskeysOperations",
+      "arguments": {
+        "userId": "user-1",
+        "passkeyIdentificationId": "passkey_identification-1"
+      },
+      "wireNames": {
+        "userId": "user_id",
+        "passkeyIdentificationId": "passkey_identification_id"
+      },
+      "argumentOrder": [
+        "userId",
+        "passkeyIdentificationId"
+      ],
+      "response": {
+        "kind": "json",
+        "expected": {
+          "object": "object",
+          "id": "id-1",
+          "slug": "slug",
+          "deleted": false,
+          "external_id": "external-1"
+        },
+        "byteLength": 0
+      }
+    },
+    {
+      "id": "deleteUserPasskey:deleteUserPasskey:403",
+      "operationId": "deleteUserPasskey",
+      "methodName": "deleteUserPasskey",
+      "namespace": [
+        "users"
+      ],
+      "mode": "normal",
+      "owner": "dev.octri.showcase.clerk.methods.UsersPasskeysOperations",
+      "arguments": {
+        "userId": "user-1",
+        "passkeyIdentificationId": "passkey_identification-1"
+      },
+      "wireNames": {
+        "userId": "user_id",
+        "passkeyIdentificationId": "passkey_identification_id"
+      },
+      "argumentOrder": [
+        "userId",
+        "passkeyIdentificationId"
+      ],
+      "response": {
+        "kind": "error",
+        "status": 403,
+        "expected": {
+          "errors": [
+            {
+              "message": "example text",
+              "long_message": "example text",
+              "code": "code",
+              "meta": {}
+            }
+          ],
+          "meta": {},
+          "clerk_trace_id": "clerk_trace-1"
+        },
+        "byteLength": 0
+      }
+    },
+    {
       "id": "DeleteUserProfileImage:deleteUserProfileImage",
       "operationId": "DeleteUserProfileImage",
       "methodName": "deleteUserProfileImage",
@@ -9527,7 +9599,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersProfileImageOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -9903,7 +9975,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersProfileImageOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -9932,78 +10004,6 @@
       }
     },
     {
-      "id": "deleteUsersPasskey:deleteUsersPasskey",
-      "operationId": "deleteUsersPasskey",
-      "methodName": "deleteUsersPasskey",
-      "namespace": [
-        "users"
-      ],
-      "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
-      "arguments": {
-        "userId": "user-1",
-        "passkeyIdentificationId": "passkey_identification-1"
-      },
-      "wireNames": {
-        "userId": "user_id",
-        "passkeyIdentificationId": "passkey_identification_id"
-      },
-      "argumentOrder": [
-        "userId",
-        "passkeyIdentificationId"
-      ],
-      "response": {
-        "kind": "json",
-        "expected": {
-          "object": "object",
-          "id": "id-1",
-          "slug": "slug",
-          "deleted": false,
-          "external_id": "external-1"
-        },
-        "byteLength": 0
-      }
-    },
-    {
-      "id": "deleteUsersPasskey:deleteUsersPasskey:403",
-      "operationId": "deleteUsersPasskey",
-      "methodName": "deleteUsersPasskey",
-      "namespace": [
-        "users"
-      ],
-      "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
-      "arguments": {
-        "userId": "user-1",
-        "passkeyIdentificationId": "passkey_identification-1"
-      },
-      "wireNames": {
-        "userId": "user_id",
-        "passkeyIdentificationId": "passkey_identification_id"
-      },
-      "argumentOrder": [
-        "userId",
-        "passkeyIdentificationId"
-      ],
-      "response": {
-        "kind": "error",
-        "status": 403,
-        "expected": {
-          "errors": [
-            {
-              "message": "example text",
-              "long_message": "example text",
-              "code": "code",
-              "meta": {}
-            }
-          ],
-          "meta": {},
-          "clerk_trace_id": "clerk_trace-1"
-        },
-        "byteLength": 0
-      }
-    },
-    {
       "id": "deleteUsersWeb3Wallet:deleteUsersWeb3Wallet",
       "operationId": "deleteUsersWeb3Wallet",
       "methodName": "deleteUsersWeb3Wallet",
@@ -10011,7 +10011,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart2",
+      "owner": "dev.octri.showcase.clerk.methods.UsersWeb3WalletsOperations",
       "arguments": {
         "userId": "user-1",
         "web3WalletIdentificationId": "web3_wallet_identification-1"
@@ -10044,7 +10044,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart2",
+      "owner": "dev.octri.showcase.clerk.methods.UsersWeb3WalletsOperations",
       "arguments": {
         "userId": "user-1",
         "web3WalletIdentificationId": "web3_wallet_identification-1"
@@ -10149,7 +10149,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersMfaOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -10175,7 +10175,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersMfaOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -13307,7 +13307,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOauthAccessTokensOperations",
       "arguments": {
         "userId": "user-1",
         "provider": "provider",
@@ -13359,7 +13359,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOauthAccessTokensOperations",
       "arguments": {
         "userId": "user-1",
         "provider": "provider",
@@ -15517,7 +15517,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -15893,7 +15893,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -15929,7 +15929,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBillingOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -15961,7 +15961,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBillingOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -15997,7 +15997,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBillingOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -16589,7 +16589,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBillingOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -16625,7 +16625,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersCountOperations",
       "arguments": {
         "emailAddress": [
           "user@example.com"
@@ -16731,7 +16731,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersCountOperations",
       "arguments": {
         "emailAddress": [
           "user@example.com"
@@ -20110,7 +20110,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBiometricCredentialsOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -20151,7 +20151,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBiometricCredentialsOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -20187,7 +20187,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOperations",
       "arguments": {
         "emailAddress": [
           "user@example.com"
@@ -20656,7 +20656,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOperations",
       "arguments": {
         "emailAddress": [
           "user@example.com"
@@ -20783,7 +20783,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersTrustedDevicesOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -20824,7 +20824,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersTrustedDevicesOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -20921,7 +20921,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersLockOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -21297,7 +21297,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersLockOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -22011,7 +22011,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersRemovePasswordOperations",
       "arguments": {
         "userId": "user-1",
         "signOutOfOtherSessions": false
@@ -22390,7 +22390,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersRemovePasswordOperations",
       "arguments": {
         "userId": "user-1",
         "signOutOfOtherSessions": false
@@ -23071,7 +23071,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersMetadataOperations",
       "arguments": {
         "userId": "user-1",
         "publicMetadata": {},
@@ -23456,7 +23456,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersMetadataOperations",
       "arguments": {
         "userId": "user-1",
         "publicMetadata": {},
@@ -24358,7 +24358,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart2",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBiometricCredentialsOperations",
       "arguments": {
         "userId": "user-1",
         "biometricCredentialId": "biometric_credential-1"
@@ -24397,7 +24397,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart2",
+      "owner": "dev.octri.showcase.clerk.methods.UsersBiometricCredentialsOperations",
       "arguments": {
         "userId": "user-1",
         "biometricCredentialId": "biometric_credential-1"
@@ -24436,7 +24436,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersTrustedDevicesOperations",
       "arguments": {
         "userId": "user-1",
         "trustedDeviceId": "trusted_device-1"
@@ -24475,7 +24475,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersTrustedDevicesOperations",
       "arguments": {
         "userId": "user-1",
         "trustedDeviceId": "trusted_device-1"
@@ -24841,7 +24841,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart2",
+      "owner": "dev.octri.showcase.clerk.methods.UsersPasswordOperations",
       "arguments": {
         "userId": "user-1",
         "revokeAllSessions": false
@@ -25220,7 +25220,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart2",
+      "owner": "dev.octri.showcase.clerk.methods.UsersPasswordOperations",
       "arguments": {
         "userId": "user-1",
         "revokeAllSessions": false
@@ -25259,7 +25259,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersProfileImageOperations",
       "arguments": {
         "userId": "user-1",
         "file": "ZXhhbXBsZQ=="
@@ -25638,7 +25638,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersProfileImageOperations",
       "arguments": {
         "userId": "user-1",
         "file": "ZXhhbXBsZQ=="
@@ -25778,7 +25778,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersUnbanOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -26154,7 +26154,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersUnbanOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -26190,7 +26190,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersUnbanOperations",
       "arguments": {
         "userIds": [
           "user_ids"
@@ -26570,7 +26570,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersUnbanOperations",
       "arguments": {
         "userIds": [
           "user_ids"
@@ -26608,7 +26608,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersUnlockOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -26984,7 +26984,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersUnlockOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -27020,7 +27020,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart2",
+      "owner": "dev.octri.showcase.clerk.methods.UsersPasswordOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -27396,7 +27396,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart2",
+      "owner": "dev.octri.showcase.clerk.methods.UsersPasswordOperations",
       "arguments": {
         "userId": "user-1"
       },
@@ -30673,7 +30673,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOperations",
       "arguments": {
         "userId": "user-1",
         "externalId": "external-1",
@@ -31126,7 +31126,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOperations",
       "arguments": {
         "userId": "user-1",
         "externalId": "external-1",
@@ -31239,7 +31239,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersMetadataOperations",
       "arguments": {
         "userId": "user-1",
         "publicMetadata": {},
@@ -31624,7 +31624,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersMetadataOperations",
       "arguments": {
         "userId": "user-1",
         "publicMetadata": {},
@@ -31999,7 +31999,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOrganizationInvitationsOperations",
       "arguments": {
         "userId": "user-1",
         "limit": 10,
@@ -32067,7 +32067,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOrganizationInvitationsOperations",
       "arguments": {
         "userId": "user-1",
         "limit": 10,
@@ -32112,7 +32112,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOrganizationMembershipsOperations",
       "arguments": {
         "userId": "user-1",
         "limit": 10,
@@ -32193,7 +32193,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersOrganizationMembershipsOperations",
       "arguments": {
         "userId": "user-1",
         "limit": 10,
@@ -32660,7 +32660,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersVerifyPasswordOperations",
       "arguments": {
         "userId": "user-1",
         "password": "password"
@@ -32689,7 +32689,7 @@
         "users"
       ],
       "mode": "normal",
-      "owner": "dev.octri.showcase.clerk.methods.UsersPart1",
+      "owner": "dev.octri.showcase.clerk.methods.UsersVerifyTotpOperations",
       "arguments": {
         "userId": "user-1",
         "code": "code"
