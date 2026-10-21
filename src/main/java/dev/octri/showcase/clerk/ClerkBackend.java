@@ -1311,15 +1311,15 @@ public class ClerkBackend {
         /**
          * Delete the passkey identification for a given user. The user is notified through email or SMS unless the passkey registration was never completed.
          */
-        public DeletedObject deletePasskey(Users.DeleteUsersPasskeyRequest request) {
-            return Users.deleteUsersPasskey(this.clientConfig, request);
+        public DeletedObject deletePasskey(Users.DeleteUserPasskeyRequest request) {
+            return Users.deleteUserPasskey(this.clientConfig, request);
         }
 
         /**
          * Delete the passkey identification for a given user. The user is notified through email or SMS unless the passkey registration was never completed.
          */
-        public DeletedObject deletePasskey(Users.DeleteUsersPasskeyRequest request, SdkConfig.RequestOptions options) {
-            return Users.deleteUsersPasskey(this.clientConfig, request, options);
+        public DeletedObject deletePasskey(Users.DeleteUserPasskeyRequest request, SdkConfig.RequestOptions options) {
+            return Users.deleteUserPasskey(this.clientConfig, request, options);
         }
 
         /**

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 
-public class Users extends UsersPart2 {
+public class Users extends UsersPasswordOperations {
 
 
     public static class VerifyPasswordResponse {
@@ -919,20 +919,20 @@ public class Users extends UsersPart2 {
         public String getUserId() { return userId; }
     }
 
-    public static class DeleteUsersPasskeyRequest {
+    public static class DeleteUserPasskeyRequest {
 
         private String userId;
         private String passkeyIdentificationId;
 
-        private DeleteUsersPasskeyRequest() {}
+        private DeleteUserPasskeyRequest() {}
 
         public static Builder builder() { return new Builder(); }
 
         public static class Builder {
-            private final DeleteUsersPasskeyRequest request = new DeleteUsersPasskeyRequest();
+            private final DeleteUserPasskeyRequest request = new DeleteUserPasskeyRequest();
             public Builder userId(String val) { request.userId = val; return this; }
             public Builder passkeyIdentificationId(String val) { request.passkeyIdentificationId = val; return this; }
-            public DeleteUsersPasskeyRequest build() { return request; }
+            public DeleteUserPasskeyRequest build() { return request; }
         }
         public String getUserId() { return userId; }
         public String getPasskeyIdentificationId() { return passkeyIdentificationId; }
